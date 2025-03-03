@@ -1,12 +1,13 @@
 {
   "name": "kesmeey/unicodeUtil",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "readme": "README.md",
   "repository": "",
   "license": "Apache-2.0",
   "keywords": [
     "unicode",
     "utils"],
-  "description": "unicodeUtil is a toolkit for handling Unicode code point attributes. It provides a variety of functions to test the attributes of Unicode code points.",
+  "description": 
+  "unicodeUtil is a toolkit for handling Unicode code point attributes. It provides a variety of functions to test the attributes of Unicode code points.",
   "source": "src"
 }
