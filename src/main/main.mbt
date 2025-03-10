@@ -34,7 +34,6 @@ fn main {
   println(@lib.to_lower('Ａ')) // 'ａ'
   
   // 特殊土耳其语字符
-  println(@lib.to_lower('I')) // 'ı' (Turkish I without dot)
   println(@lib.to_lower('İ')) // 'i' (I with dot)
   
   // 非字母Unicode字符

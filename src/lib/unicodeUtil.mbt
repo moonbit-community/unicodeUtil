@@ -193,6 +193,10 @@ pub fn to_lower(r : Char) -> Char {
   if code >= 0xFF21 && code <= 0xFF3A {
     return Char::from_int(code + 32)
   }
+  // 6. - 德语大写ẞ小写转换
+  if code == 0x1E9E { // 大写的ẞ (U+1E9E)
+    return Char::from_int(0xDF) // 转换为小写的ß (U+00DF)
+  }
 
   // 其他Unicode范围的处理
   return r
@@ -279,25 +283,26 @@ fn to_latin1_case(case_type : Int, r : Char) -> Char {
 
     // 特殊情况处理 - 德语ß大写转换
     if code == 0xDF { // 德语 ß
-      return 'S' // 简化处理，返回'S'而不是"SS"
+      return Char::from_int(0x1E9E) // 转换为大写的ẞ (U+1E9E)
     }
   }
   return r
 }
+
 ///| 辅助函数：将字符串转换为小写
-pub  fn string_to_lower(s: String) -> String {
-    let mut result = ""
-    for i = 0; i < s.length(); i = i + 1 {
-        result = result + to_lower(s[i]).to_string()
-    }
-    result
+pub fn string_to_lower(s : String) -> String {
+  let mut result = ""
+  for i = 0; i < s.length(); i = i + 1 {
+    result = result + to_lower(s[i]).to_string()
+  }
+  result
 }
 
 ///| 辅助函数：将字符串转换为大写
-pub fn string_to_upper(s: String) -> String {
-    let mut result = ""
-    for i = 0; i < s.length(); i = i + 1 {
-        result = result + to_upper(s[i]).to_string()
-    }
-    result
+pub fn string_to_upper(s : String) -> String {
+  let mut result = ""
+  for i = 0; i < s.length(); i = i + 1 {
+    result = result + to_upper(s[i]).to_string()
+  }
+  result
 }
