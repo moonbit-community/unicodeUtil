@@ -78,7 +78,7 @@ test "special_case_conversion" {
   assert_eq!(to_lower('Я'), 'я') // Cyrillic Ya
   assert_eq!(to_upper('я'), 'Я')
 
-  // 特殊情况
+  // 德语ß 
   assert_eq!(to_upper('ß'), 'ẞ') // 小写ß -> 大写ẞ (不是'SS'或'S')
   assert_eq!(to_lower('ẞ'), 'ß') // 大写ẞ -> 小写ß
 
@@ -143,9 +143,6 @@ test "to_upper_latin1" {
   // 已经是大写的字符
   assert_eq!(to_upper('À'), 'À')
   assert_eq!(to_upper('Ç'), 'Ç')
-
-  // 特殊情况 - 德语锐音ß
-  assert_eq!(to_upper('ß'), 'S')
 }
 
 ///|
