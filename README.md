@@ -102,7 +102,7 @@ fn main {
   println(@lib.to_upper('ı')) // 'I' (dotless i)
   
   // 特殊德语字符
-  println(@lib.to_upper('ß')) // 'S' (简化实现，实际应该是"SS")
+  println(@lib.to_upper('ß')) // 'ẞ' (简化实现，实际应该是"SS")
   
   // 非字母Unicode字符
   println(@lib.to_upper('漢')) // '漢' (unchanged)
