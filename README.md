@@ -1,114 +1,141 @@
-# unicodeUtil 
+# 🐱 unicodeUtil: Unicode Code Point Property Utility
 
-`unicodeUtil` 是一个用于处理 Unicode 码点属性的工具包，提供了多种函数来测试 Unicode 码点的属性。
+[English](https://github.com/moonbit-community/unicodeUtil/blob/main/README.md) | [简体中文](https://github.com/moonbit-community/unicodeUtil/blob/main/README_zh_CN.md)
 
-判断字符是否数字（支持多种Unicode数字表达）
+[![Build Status](https://img.shields.io/github/actions/workflow/status/moonbit-community/unicodeUtil/ci.yml)](https://github.com/moonbit-community/unicodeUtil/actions)
+[![License](https://img.shields.io/github/license/moonbit-community/unicodeUtil)](LICENSE)
+[![codecov](https://codecov.io/gh/moonbit-community/NyaSearch/branch/main/graph/badge.svg)](https://codecov.io/gh/moonbit-community/unicodeUtil)
+
+`unicodeUtil` is a utility package for handling Unicode code point properties. It provides various functions to test Unicode code point attributes, including checking if a character is a digit and converting between uppercase and lowercase. It supports multiple Unicode character sets and is suitable for internationalization, text processing, and character analysis.
+
+🚀 **Key Features**
+• 🔍 **Unicode Digit Check** – Supports various Unicode digit representations.
+• ⚡ **Case Conversion** – Supports case conversion for multiple Unicode characters.
+• 🛠 **Easy to Use** – Provides a simple API for quick integration.
+• ✅ **Extensively Tested** – Tested with a wide range of Unicode characters.
+• 🔄 **Open Source** – Actively maintained by the Moonbit community.
+
+---
+
+## 📥 Installation
 
 ```
+moon add kesmeey/unicodeUtil
+```
+
+## **🚀 `unicodeUtil` Usage Guide**
+
+`unicodeUtil` offers various functions to handle Unicode character properties. You can use it to check if a character is a digit or perform case conversion.
+
+---
+
+### **🔍 Check if a Character is a Digit**
+
+The `is_digit` function checks if a character is a digit, supporting various Unicode digit representations.
+
+```moonbit
 fn main {
-  // ASCII 数字 (0-9)
-  println(@lib.is_digit('0'))//true
-  // ASCII 非数字字符
-  println(@lib.is_digit('a'))//false
-  // Latin1 范围内非数字字符
-  println(@lib.is_digit('é'))//false
-  // Unicode 数字
- // 阿拉伯数字 (Arabic-Indic digits)
-  println(@lib.is_digit('٩')) // 阿拉伯中的9  true
-  // 波斯数字 (Persian digits)
-  println(@lib.is_digit('۵'))//波斯数字的5 true
-   // 天城文数字 (Devanagari digits)
-  println(@lib.is_digit('५'))//天城文数字5 true
-  // 泰文数字 (Thai digits)
-  println(@lib.is_digit('๕'))//泰文数字5 true
-   // Unicode 非数字字符
- println(@lib.is_digit('か'))  // 日语假名  false
-    // 边界测试
-    println(@lib.is_digit('\u0000'))  // NULL字符  false
+  // ASCII digits (0-9)
+  println(@lib.is_digit('0')) // true
+  // ASCII non-digit characters
+  println(@lib.is_digit('a')) // false
+  // Arabic-Indic digit (9)
+  println(@lib.is_digit('٩')) // true
+  // Unicode non-digit character (Japanese kana)
+  println(@lib.is_digit('か')) // false
 }
-
 ```
 
-大写转小写（支持多种Unicode字符）
+---
 
-```
+### **🎯 Convert Uppercase to Lowercase**
+
+The `to_lower` function converts uppercase characters to lowercase, supporting multiple Unicode characters.
+
+```moonbit
 fn main {
-  
-  // ASCII 大写字母
+  // ASCII uppercase letters
   println(@lib.to_lower('A')) // 'a'
   println(@lib.to_lower('Z')) // 'z'
   
-  // Latin1 大写字母
+  // Latin1 uppercase letters
   println(@lib.to_lower('É')) // 'é'
   println(@lib.to_lower('Ñ')) // 'ñ'
   println(@lib.to_lower('Ö')) // 'ö'
   
-  // 希腊字母
+  // Greek letters
   println(@lib.to_lower('Α')) // 'α' (Alpha)
   println(@lib.to_lower('Ω')) // 'ω' (Omega)
   
-  // 西里尔字母
-  println(@lib.to_lower('А')) // 'а' (Cyrillic A)
-  println(@lib.to_lower('Я')) // 'я' (Cyrillic Ya)
-  
-  // 亚美尼亚字母
-  println(@lib.to_lower('Ա')) // 'ա' (Ayb)
-  
-  // 全角字母
-  println(@lib.to_lower('Ａ')) // 'ａ'
-  
-  // 特殊土耳其语字符
+  // Special Turkish character
   println(@lib.to_lower('İ')) // 'i' (I with dot)
   
-  // 非字母Unicode字符
-  println(@lib.to_lower('漢')) // '漢' (unchanged)
+  // Non-letter Unicode character
   println(@lib.to_lower('☺')) // '☺' (unchanged)
 }
-
 ```
 
-小写转大写（支持多种Unicode字符）
+---
 
-```
+### **🎯 Convert Lowercase to Uppercase**
+
+The `to_upper` function converts lowercase characters to uppercase, supporting multiple Unicode characters.
+
+```moonbit
 fn main {
-    // ASCII 小写字母
+  // ASCII lowercase letters
   println(@lib.to_upper('a')) // 'A'
   println(@lib.to_upper('z')) // 'Z'
  
-  // ASCII 非字母字符
-  println(@lib.to_upper('0')) // '0'
-  println(@lib.to_upper('!')) // '!'
-  
-  // Latin1 小写字母
+  // Latin1 lowercase letters
   println(@lib.to_upper('é')) // 'É'
   println(@lib.to_upper('ñ')) // 'Ñ'
   println(@lib.to_upper('ö')) // 'Ö'
   
-  // 希腊字母
+  // Greek letters
   println(@lib.to_upper('α')) // 'Α' (alpha)
   println(@lib.to_upper('ω')) // 'Ω' (omega)
   
-  // 西里尔字母
-  println(@lib.to_upper('а')) // 'А' (cyrillic a)
-  println(@lib.to_upper('я')) // 'Я' (cyrillic ya)
-  
-  // 亚美尼亚字母
-  println(@lib.to_upper('ա')) // 'Ա' (ayb)
-  
-  // 全角字母
-  println(@lib.to_upper('ａ')) // 'Ａ'
-  
-  // 特殊土耳其语字符
+  // Special Turkish character
   println(@lib.to_upper('ı')) // 'I' (dotless i)
   
-  // 特殊德语字符
-  println(@lib.to_upper('ß')) // 'ẞ' (简化实现，实际应该是"SS")
+  // Special German character
+  println(@lib.to_upper('ß')) // 'ẞ' (simplified implementation, should be "SS")
   
-  // 非字母Unicode字符
+  // Non-letter Unicode character
   println(@lib.to_upper('漢')) // '漢' (unchanged)
-  println(@lib.to_upper('☺')) // '☺' (unchanged)
-  
 }
-
 ```
 
+---
+
+### **🛠 Complete Example**
+
+```moonbit
+fn main {
+  // Check if a character is a digit
+  println(@lib.is_digit('5')) // true
+  println(@lib.is_digit('五')) // true
+
+  // Convert uppercase to lowercase
+  println(@lib.to_lower('É')) // 'é'
+  println(@lib.to_lower('Ω')) // 'ω'
+
+  // Convert lowercase to uppercase
+  println(@lib.to_upper('ß')) // 'ẞ'
+  println(@lib.to_upper('α')) // 'Α'
+}
+```
+
+🎉 **Now you can use `unicodeUtil` for Unicode character property handling!** 🚀
+
+## 📜 License
+
+This project is licensed under the Apache-2.0 License. See [LICENSE](https://github.com/moonbit-community/unicodeUtil/blob/main/LICENSE) for details.
+
+## 📢 Contact & Support
+
+• Moonbit Community: [moonbit-community](https://github.com/moonbit-community)
+• GitHub Issues: [Report an Issue](https://github.com/moonbit-community/unicodeUtil/issues)
+
+👋 If you like this project, give it a ⭐! Happy coding! 🚀
