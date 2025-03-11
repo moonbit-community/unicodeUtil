@@ -14,6 +14,8 @@
 
 • ⚡ **Case Conversion** – Supports case conversion for multiple Unicode characters.
 
+• 📍 ​Punctuation Check – Supports the identification of various Unicode punctuation marks, including common punctuation (such as periods, commas), special symbols (such as Em dash, ellipsis), and full-width punctuation marks.
+
 • 🛠 **Easy to Use** – Provides a simple API for quick integration.
 
 • ✅ **Extensively Tested** – Tested with a wide range of Unicode characters.
@@ -114,6 +116,30 @@ fn main {
 
 ---
 
+
+
+
+### **🎯 Check if a Character is a Punctuation Mark**
+The `is_punct` function is used to determine whether a character is a punctuation mark, supporting various Unicode punctuation symbols.
+
+```moonbit
+fn main {
+  // Unicode punctuation tests
+  println(@lib.is_punct('—')) // true, Em dash
+  println(@lib.is_punct('≠')) // true, Not equal sign
+
+  // Non-punctuation characters
+  println(@lib.is_punct('é')) // false
+  println(@lib.is_punct('±')) // false, Plus-minus sign is usually considered a mathematical symbol, not punctuation
+
+  // Full-width ASCII punctuation
+  println(@lib.is_punct('．')) // true, Full-width period
+  println(@lib.is_punct('？')) // true, Full-width question mark
+}
+```
+
+---
+
 ### **🛠 Complete Example**
 
 ```moonbit
@@ -129,6 +155,10 @@ fn main {
   // Convert lowercase to uppercase
   println(@lib.to_upper('ß')) // 'ẞ'
   println(@lib.to_upper('α')) // 'Α'
+
+  // Check if a character is a punctuation mark
+  println(@lib.is_punct('—')) // true, Em dash
+  println(@lib.is_punct('？')) // true, Full-width question mark
 }
 ```
 

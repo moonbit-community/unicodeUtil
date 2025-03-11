@@ -15,6 +15,8 @@
 
 • ⚡ **大小写转换** – 支持多种 Unicode 字符的大小写转换。
 
+• 📍 ​判断标点符号 – 支持多种 Unicode 标点符号的判断，包括常用标点（如句号、逗号）、特殊符号（如 Em dash、省略号）以及全角标点符号。
+
 • 🛠 **易于使用** – 提供简单的 API 便于快速集成。
 
 • ✅ **广泛测试** – 经过多种 Unicode 字符的测试。
@@ -112,9 +114,59 @@ fn main {
   println(@lib.to_upper('漢')) // '漢' (unchanged)
 }
 ```
+---
 
-### 
+### **🎯 判断**
 
+`to_upper` 函数用于将小写字符转换为大写，支持多种 Unicode 字符。
+
+```moonbit
+fn main {
+  // ASCII 小写字母
+  println(@lib.to_upper('a')) // 'A'
+  println(@lib.to_upper('z')) // 'Z'
+ 
+  // Latin1 小写字母
+  println(@lib.to_upper('é')) // 'É'
+  println(@lib.to_upper('ñ')) // 'Ñ'
+  println(@lib.to_upper('ö')) // 'Ö'
+  
+  // 希腊字母
+  println(@lib.to_upper('α')) // 'Α' (alpha)
+  println(@lib.to_upper('ω')) // 'Ω' (omega)
+  
+  // 特殊土耳其语字符
+  println(@lib.to_upper('ı')) // 'I' (dotless i)
+  
+  // 特殊德语字符
+  println(@lib.to_upper('ß')) // 'ẞ' (简化实现，实际应该是"SS")
+  
+  // 非字母Unicode字符
+  println(@lib.to_upper('漢')) // '漢' (unchanged)
+}
+```
+
+---
+
+
+### **🎯 判断字符是否为标点符号**
+`is_punct`  函数用于判断字符是否为标点符号，支持多种 Unicode 标点符号。
+
+```moonbit
+fn main {
+  // Unicode 标点符号测试
+  println(@lib.is_punct('—')) // true, Em dash
+  println(@lib.is_punct('≠')) // true, 不等号
+
+  // 非标点符号
+  println(@lib.is_punct('é')) // false
+  println(@lib.is_punct('±')) // false, 加减号通常被视为数学符号而非标点
+
+  // 全角ASCII标点
+  println(@lib.is_punct('．')) // true, 全角句点
+  println(@lib.is_punct('？')) // true, 全角问号
+}
+```
 ---
 
 ### **🛠 完整示例**
@@ -132,6 +184,10 @@ fn main {
   // 小写转大写
   println(@lib.to_upper('ß')) // 'ẞ'
   println(@lib.to_upper('α')) // 'Α'
+
+ //判断是否为标点符号
+ println(@lib.is_punct('—')) // true, Em dash
+ println(@lib.is_punct('？')) // true, 全角问号
 }
 ```
 
