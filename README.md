@@ -1,6 +1,6 @@
 # 🐱 unicodeUtil: Unicode Code Point Property Utility
 
-[English](https://github.com/moonbit-community/unicodeUtil/blob/main/README.md) | [简体中文](https://github.com/moonbit-community/unicodeUtil/blob/main/README_zh_CN.md)
+[English](https://github.com/moonbit-community/unicodeUtil/blob/master/README.md) | [简体中文](https://github.com/moonbit-community/unicodeUtil/blob/master/README_zh_CN.md)
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/moonbit-community/unicodeUtil/ci.yml)](https://github.com/moonbit-community/unicodeUtil/actions)
 [![License](https://img.shields.io/github/license/moonbit-community/unicodeUtil)](LICENSE)
@@ -9,10 +9,15 @@
 `unicodeUtil` is a utility package for handling Unicode code point properties. It provides various functions to test Unicode code point attributes, including checking if a character is a digit and converting between uppercase and lowercase. It supports multiple Unicode character sets and is suitable for internationalization, text processing, and character analysis.
 
 🚀 **Key Features**
+
 • 🔍 **Unicode Digit Check** – Supports various Unicode digit representations.
+
 • ⚡ **Case Conversion** – Supports case conversion for multiple Unicode characters.
+
 • 🛠 **Easy to Use** – Provides a simple API for quick integration.
+
 • ✅ **Extensively Tested** – Tested with a wide range of Unicode characters.
+
 • 🔄 **Open Source** – Actively maintained by the Moonbit community.
 
 ---
