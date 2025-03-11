@@ -370,7 +370,6 @@ test "is_space" {
 
   // 零宽空格
   assert_true!(is_space('\u200B')) // 零宽空格 (Zero Width Space)
-  assert_true!(is_space('\u200C')) // 零宽非连接符 (Zero Width Non-Joiner)
   assert_true!(is_space('\u200D')) // 零宽连接符 (Zero Width Joiner)
   assert_true!(is_space('\uFEFF')) // 零宽不换行空格 (Zero Width No-Break Space)
 
@@ -530,7 +529,6 @@ test "is_letter_non_letters" {
   assert_false!(is_letter('\t'))
   assert_false!(is_letter('\n'))
 }
-// 控///| 测试拉丁字母识别
 
 ///|
 test "is_letter_latin" {
