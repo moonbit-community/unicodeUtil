@@ -1,6 +1,6 @@
 # 🐱 unicodeUtil：Unicode 码点属性处理工具包
 
-[English](https://github.com/moonbit-community/unicodeUtil/blob/main/README.md) | [简体中文](https://github.com/moonbit-community/unicodeUtil/blob/main/README_zh_CN.md)
+[English](https://github.com/moonbit-community/unicodeUtil/blob/master/README.md) | [简体中文](https://github.com/moonbit-community/unicodeUtil/blob/master/README_zh_CN.md)
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/moonbit-community/unicodeUtil/ci.yml)](https://github.com/moonbit-community/unicodeUtil/actions)
 [![License](https://img.shields.io/github/license/moonbit-community/unicodeUtil)](LICENSE)

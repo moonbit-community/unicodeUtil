@@ -295,3 +295,391 @@ test "is_punct_unicode" {
   assert_false!(is_punct('א')) // 希伯来字母
   assert_false!(is_punct('１')) // 全角数字
 }
+
+///| 测试标记符号识别
+test "is_mark" {
+  // 组合标记
+  assert_true!(is_mark('\u0300')) // 重音符号 (Combining Grave Accent)
+  assert_true!(is_mark('\u0301')) // 锐音符号 (Combining Acute Accent)
+  assert_true!(is_mark('\u0302')) // 扬抑符 (Combining Circumflex Accent)
+  assert_true!(is_mark('\u0303')) // 波浪符 (Combining Tilde)
+  assert_true!(is_mark('\u0308')) // 分音符 (Combining Diaeresis)
+
+  // 语言特定标记
+  assert_true!(is_mark('\u0591')) // 希伯来标记 (Hebrew Accent Etnahta)
+  assert_true!(is_mark('\u064B')) // 阿拉伯标记 (Arabic Fathatan)
+  assert_true!(is_mark('\u0E38')) // 泰文标记 (Thai Character Sara U)
+  assert_true!(is_mark('\u0EB5')) // 老挝标记 (Lao Vowel Sign Ii)
+
+  // 非标记符号
+  assert_false!(is_mark('a')) // 拉丁字母
+  assert_false!(is_mark('1')) // 数字
+  assert_false!(is_mark('.')) // 标点符号
+  assert_false!(is_mark('´')) // 独立的锐音符号（不是组合标记）
+  assert_false!(is_mark('ä')) // 已经组合好的字符（不是标记本身）
+  assert_false!(is_mark(' ')) // 空格
+  assert_false!(is_mark('\u00A0')) // 不换行空格 (NBSP)
+
+  // 特殊情况
+  assert_true!(is_mark('\u02B4')) // 修饰符号小字母 h (Modifier Letter Small H)
+  assert_true!(is_mark('\u24D9')) // 封闭的小写字母 r
+}
+
+///| 标记符号与常规字符组合测试
+test "marks_with_base_char" {
+  // 测试字符串中标记符号的识别
+  let s = "e\u0301" // 'é' 分解形式（'e' + 锐音符号）
+  assert_false!(is_mark(s[0])) // 'e' 不是标记
+  assert_true!(is_mark(s[1])) // '\u0301' 是标记
+
+  // 注意：这里测试的是组合标记而非预组合字符
+  // 'é' (U+00E9) 是预组合字符，不是标记
+  assert_false!(is_mark('é'))
+}
+
+///|
+test "is_space" {
+  // ASCII 空白字符
+  assert_true!(is_space(' ')) // 空格
+  assert_true!(is_space('\t')) // 水平制表符
+  assert_true!(is_space('\n')) // 换行符
+  assert_true!(is_space('\r')) // 回车符
+  assert_true!(is_space('\u000B')) // 垂直制表符
+  assert_true!(is_space('\u000C')) // 换页符
+
+  // Latin1 空白字符
+  assert_true!(is_space('\u00A0')) // 不换行空格 (NBSP)
+
+  // Unicode 空白字符
+  assert_true!(is_space('\u2000')) // 半角空格 (En Space)
+  assert_true!(is_space('\u2001')) // 全角空格 (Em Space)
+  assert_true!(is_space('\u2002')) // 半角空格 (En Space)
+  assert_true!(is_space('\u2003')) // 全角空格 (Em Space)
+  assert_true!(is_space('\u2004')) // 三分之一全角空格 (Three-Per-Em Space)
+  assert_true!(is_space('\u2005')) // 四分之一全角空格 (Four-Per-Em Space)
+  assert_true!(is_space('\u2006')) // 六分之一全角空格 (Six-Per-Em Space)
+  assert_true!(is_space('\u2007')) // 数字空格 (Figure Space)
+  assert_true!(is_space('\u2008')) // 标点符号空格 (Punctuation Space)
+  assert_true!(is_space('\u2009')) // 窄空格 (Thin Space)
+  assert_true!(is_space('\u200A')) // 极窄空格 (Hair Space)
+  assert_true!(is_space('\u2028')) // 行分隔符 (Line Separator)
+  assert_true!(is_space('\u2029')) // 段落分隔符 (Paragraph Separator)
+  assert_true!(is_space('\u202F')) // 窄不换行空格 (Narrow No-Break Space)
+  assert_true!(is_space('\u205F')) // 中度数学空格 (Medium Mathematical Space)
+  assert_true!(is_space('\u3000')) // 表意文字空格 (Ideographic Space)
+
+  // 零宽空格
+  assert_true!(is_space('\u200B')) // 零宽空格 (Zero Width Space)
+  assert_true!(is_space('\u200C')) // 零宽非连接符 (Zero Width Non-Joiner)
+  assert_true!(is_space('\u200D')) // 零宽连接符 (Zero Width Joiner)
+  assert_true!(is_space('\uFEFF')) // 零宽不换行空格 (Zero Width No-Break Space)
+
+  // 非空白字符
+  assert_false!(is_space('a')) // 字母
+  assert_false!(is_space('1')) // 数字
+  assert_false!(is_space('.')) // 标点符号
+  assert_false!(is_space('あ')) // 日语假名
+  assert_false!(is_space('漢')) // 汉字
+}
+
+///| 测试控制字符识别
+test "is_control" {
+  // ASCII 控制字符
+  assert_true!(is_control('\u0000')) // NULL
+  assert_true!(is_control('\u0001')) // START OF HEADING
+  assert_true!(is_control('\u0007')) // BELL
+  assert_true!(is_control('\u0008')) // BACKSPACE
+  assert_true!(is_control('\u0009')) // HORIZONTAL TABULATION (TAB)
+  assert_true!(is_control('\u000A')) // LINE FEED (LF)
+  assert_true!(is_control('\u000D')) // CARRIAGE RETURN (CR)
+  assert_true!(is_control('\u001B')) // ESCAPE
+  assert_true!(is_control('\u001F')) // UNIT SEPARATOR
+  assert_true!(is_control('\u007F')) // DELETE
+
+  // Latin1 控制字符
+  assert_true!(is_control('\u0080')) // PADDING CHARACTER
+  assert_true!(is_control('\u0085')) // NEXT LINE
+  assert_true!(is_control('\u009F')) // APPLICATION PROGRAM COMMAND
+
+  // Unicode 格式控制字符
+  assert_true!(is_control('\u200C')) // ZERO WIDTH NON-JOINER
+  assert_true!(is_control('\u200D')) // ZERO WIDTH JOINER
+  assert_true!(is_control('\u200E')) // LEFT-TO-RIGHT MARK
+  assert_true!(is_control('\u200F')) // RIGHT-TO-LEFT MARK
+  assert_true!(is_control('\u202A')) // LEFT-TO-RIGHT EMBEDDING
+  assert_true!(is_control('\u202E')) // RIGHT-TO-LEFT OVERRIDE
+  assert_true!(is_control('\u2060')) // WORD JOINER
+  assert_true!(is_control('\uFEFF')) // ZERO WIDTH NO-BREAK SPACE (BOM)
+
+  // 非控制字符
+  assert_false!(is_control('a')) // 字母
+  assert_false!(is_control('1')) // 数字
+  assert_false!(is_control('.')) // 标点符号
+  assert_false!(is_control(' ')) // 空格
+  assert_false!(is_control('\u00A0')) // 不换行空格 (NBSP)
+  assert_false!(is_control('\u2022')) // 圆点符号
+}
+
+///| 测试控制字符与其他类别的关系
+test "control_vs_other_categories" {
+  // 有些控制字符同时也是空白字符
+  assert_true!(is_control('\u0009')) // TAB 是控制字符
+  assert_true!(is_space('\u0009')) // TAB 也是空白字符
+  assert_true!(is_control('\u000A')) // LF 是控制字符
+  assert_true!(is_space('\u000A')) // LF 也是空白字符
+  assert_true!(is_control('\u000D')) // CR 是控制字符
+  assert_true!(is_space('\u000D')) // CR 也是空白字符
+
+  // 格式控制字符与空白字符的区别
+  assert_true!(is_control('\u200C')) // ZWNJ 是控制字符
+  assert_false!(is_space('\u200C')) // 但在这个实现中不是空白字符
+
+  // NULL 不是空白字符
+  assert_true!(is_control('\u0000')) // NULL 是控制字符
+  assert_false!(is_space('\u0000')) // 但不是空白字符
+}
+
+///| 测试拉丁字母识别
+test "is_letter_latin" {
+  // ASCII 字母
+  assert_true!(is_letter('A'))
+  assert_true!(is_letter('Z'))
+  assert_true!(is_letter('a'))
+  assert_true!(is_letter('z'))
+
+  // Latin1 字母
+  assert_true!(is_letter('À'))
+  assert_true!(is_letter('Ç'))
+  assert_true!(is_letter('É'))
+  assert_true!(is_letter('Ñ'))
+  assert_true!(is_letter('à'))
+  assert_true!(is_letter('ç'))
+  assert_true!(is_letter('é'))
+  assert_true!(is_letter('ñ'))
+
+  // 德语特殊字符
+  assert_true!(is_letter('ß'))
+  assert_true!(is_letter('ẞ')) // 大写的ß
+
+  // 拉丁字母扩展
+  assert_true!(is_letter('Ā')) // 拉丁字母扩展A
+  assert_true!(is_letter('ā'))
+  assert_true!(is_letter('Ħ')) // 拉丁字母扩展B
+  assert_true!(is_letter('ħ'))
+  assert_true!(is_letter('Ḃ')) // 拉丁字母附加扩展
+  assert_true!(is_letter('ḃ'))
+}
+
+///| 测试各种语言字母识别
+test "is_letter_other_scripts" {
+  // 希腊字母
+  assert_true!(is_letter('Α')) // 大写Alpha
+  assert_true!(is_letter('α')) // 小写alpha
+  assert_true!(is_letter('Ω')) // 大写Omega
+  assert_true!(is_letter('ω')) // 小写omega
+
+  // 西里尔字母
+  assert_true!(is_letter('А')) // 大写A
+  assert_true!(is_letter('а')) // 小写a
+  assert_true!(is_letter('Я')) // 大写Ya
+  assert_true!(is_letter('я')) // 小写ya
+
+  // 希伯来字母
+  assert_true!(is_letter('א')) // Alef
+  assert_true!(is_letter('ת')) // Tav
+
+  // 阿拉伯字母
+  assert_true!(is_letter('ا')) // Alif
+  assert_true!(is_letter('ي')) // Yeh
+
+  // 日文字符
+  assert_true!(is_letter('あ')) // 平假名a
+  assert_true!(is_letter('ア')) // 片假名A
+  assert_true!(is_letter('ん')) // 平假名n
+  assert_true!(is_letter('ン')) // 片假名N
+
+  // 韩文
+  assert_true!(is_letter('ㄱ')) // 韩文字母
+  assert_true!(is_letter('가')) // 韩文音节
+
+  // 汉字
+  assert_true!(is_letter('漢')) // 汉
+  assert_true!(is_letter('字')) // 字
+
+  // 天城文（印地语）
+  assert_true!(is_letter('अ'))
+  assert_true!(is_letter('ह'))
+}
+
+///| 测试非字母字符
+test "is_letter_non_letters" {
+  // 数字
+  assert_false!(is_letter('0'))
+  assert_false!(is_letter('9'))
+
+  // 标点符号
+  assert_false!(is_letter('.'))
+  assert_false!(is_letter(','))
+  assert_false!(is_letter('!'))
+  assert_false!(is_letter('?'))
+  assert_false!(is_letter('-'))
+  assert_false!(is_letter('"'))
+
+  // 空白字符
+  assert_false!(is_letter(' '))
+  assert_false!(is_letter('\t'))
+  assert_false!(is_letter('\n'))
+}
+// 控///| 测试拉丁字母识别
+
+///|
+test "is_letter_latin" {
+  // ASCII 字母
+  assert_true!(is_letter('A'))
+  assert_true!(is_letter('Z'))
+  assert_true!(is_letter('a'))
+  assert_true!(is_letter('z'))
+
+  // Latin1 字母
+  assert_true!(is_letter('À'))
+  assert_true!(is_letter('Ç'))
+  assert_true!(is_letter('É'))
+  assert_true!(is_letter('Ñ'))
+  assert_true!(is_letter('à'))
+  assert_true!(is_letter('ç'))
+  assert_true!(is_letter('é'))
+  assert_true!(is_letter('ñ'))
+
+  // 德语特殊字符
+  assert_true!(is_letter('ß'))
+  assert_true!(is_letter('ẞ')) // 大写的ß
+
+  // 拉丁字母扩展
+  assert_true!(is_letter('Ā')) // 拉丁字母扩展A
+  assert_true!(is_letter('ā'))
+  assert_true!(is_letter('Ħ')) // 拉丁字母扩展B
+  assert_true!(is_letter('ħ'))
+  assert_true!(is_letter('Ḃ')) // 拉丁字母附加扩展
+  assert_true!(is_letter('ḃ'))
+}
+
+///| 测试各种语言字母识别
+test "is_letter_other_scripts" {
+  // 希腊字母
+  assert_true!(is_letter('Α')) // 大写Alpha
+  assert_true!(is_letter('α')) // 小写alpha
+  assert_true!(is_letter('Ω')) // 大写Omega
+  assert_true!(is_letter('ω')) // 小写omega
+
+  // 西里尔字母
+  assert_true!(is_letter('А')) // 大写A
+  assert_true!(is_letter('а')) // 小写a
+  assert_true!(is_letter('Я')) // 大写Ya
+  assert_true!(is_letter('я')) // 小写ya
+
+  // 希伯来字母
+  assert_true!(is_letter('א')) // Alef
+  assert_true!(is_letter('ת')) // Tav
+
+  // 阿拉伯字母
+  assert_true!(is_letter('ا')) // Alif
+  assert_true!(is_letter('ي')) // Yeh
+
+  // 日文字符
+  assert_true!(is_letter('あ')) // 平假名a
+  assert_true!(is_letter('ア')) // 片假名A
+  assert_true!(is_letter('ん')) // 平假名n
+  assert_true!(is_letter('ン')) // 片假名N
+
+  // 韩文
+  assert_true!(is_letter('ㄱ')) // 韩文字母
+  assert_true!(is_letter('가')) // 韩文音节
+
+  // 汉字
+  assert_true!(is_letter('漢')) // 汉
+  assert_true!(is_letter('字')) // 字
+
+  // 天城文（印地语）
+  assert_true!(is_letter('अ'))
+  assert_true!(is_letter('ह'))
+}
+
+///| 测试符号识别功能
+test "is_symbol" {
+  // ASCII 符号
+  assert_true!(is_symbol('$')) // 美元符号
+  assert_true!(is_symbol('%')) // 百分号
+  assert_true!(is_symbol('&')) // 和号
+  assert_true!(is_symbol('*')) // 星号
+  assert_true!(is_symbol('+')) // 加号
+  assert_true!(is_symbol('<')) // 小于号
+  assert_true!(is_symbol('=')) // 等于号
+  assert_true!(is_symbol('>')) // 大于号
+  assert_true!(is_symbol('^')) // 脱字符
+  assert_true!(is_symbol('|')) // 竖线
+  assert_true!(is_symbol('~')) // 波浪号
+
+  // Latin1 符号
+  assert_true!(is_symbol('¢')) // 美分符号
+  assert_true!(is_symbol('£')) // 英镑符号
+  assert_true!(is_symbol('¤')) // 货币符号
+  assert_true!(is_symbol('¥')) // 日元符号
+  assert_true!(is_symbol('©')) // 版权符号
+  assert_true!(is_symbol('®')) // 注册商标
+  assert_true!(is_symbol('°')) // 度数符号
+  assert_true!(is_symbol('±')) // 加减号
+  assert_true!(is_symbol('µ')) // 微符号
+  assert_true!(is_symbol('×')) // 乘号
+  assert_true!(is_symbol('÷')) // 除号
+
+  // 特殊Unicode符号
+  assert_true!(is_symbol('€')) // 欧元符号
+  assert_true!(is_symbol('™')) // 商标符号
+  assert_true!(is_symbol('℃')) // 摄氏度符号
+  assert_true!(is_symbol('№')) // 编号符号
+
+  // 数学符号
+  assert_true!(is_symbol('∀')) // 全称量词符号
+  assert_true!(is_symbol('∃')) // 存在量词符号
+  assert_true!(is_symbol('∈')) // 属于符号
+  assert_true!(is_symbol('∑')) // 求和符号
+  assert_true!(is_symbol('∏')) // 连乘符号
+  assert_true!(is_symbol('∞')) // 无穷大符号
+  assert_true!(is_symbol('∫')) // 积分符号
+  assert_true!(is_symbol('≈')) // 约等于符号
+  assert_true!(is_symbol('≠')) // 不等于符号
+  assert_true!(is_symbol('≤')) // 小于等于符号
+  assert_true!(is_symbol('≥')) // 大于等于符号
+
+  // 几何符号和箭头
+  assert_true!(is_symbol('△')) // 三角形
+  assert_true!(is_symbol('□')) // 正方形
+  assert_true!(is_symbol('○')) // 圆形
+  assert_true!(is_symbol('→')) // 右箭头
+  assert_true!(is_symbol('←')) // 左箭头
+  assert_true!(is_symbol('↑')) // 上箭头
+  assert_true!(is_symbol('↓')) // 下箭头
+  assert_true!(is_symbol('↔')) // 左右箭头
+
+  // 扑克牌和其他游戏符号
+  assert_true!(is_symbol('♠')) // 黑桃
+  assert_true!(is_symbol('♥')) // 红桃
+  assert_true!(is_symbol('♦')) // 方块
+  assert_true!(is_symbol('♣')) // 梅花
+  assert_true!(is_symbol('♚')) // 国际象棋王
+
+  // 全角符号
+  assert_true!(is_symbol('＄')) // 全角美元符号
+  assert_true!(is_symbol('％')) // 全角百分号
+
+  // 非符号字符
+  assert_false!(is_symbol('a')) // 小写字母
+  assert_false!(is_symbol('A')) // 大写字母
+  assert_false!(is_symbol('0')) // 数字
+  assert_false!(is_symbol('.')) // 标点符号
+  assert_false!(is_symbol('!')) // 标点符号
+  assert_false!(is_symbol(' ')) // 空格
+  assert_false!(is_symbol('\n')) // 控制字符
+  assert_false!(is_symbol('α')) // 希腊字母
+  assert_false!(is_symbol('漢')) // 汉字
+}
