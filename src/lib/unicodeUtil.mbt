@@ -32,6 +32,9 @@ const TitleCase = 2
 ///|
 const Digit = 9
 
+///|
+const Punct = 11
+
 ///| Unicode字符大小写转换范围
 pub(all) struct CaseRange {
   lo : Int // 范围起始
@@ -305,4 +308,195 @@ pub fn string_to_upper(s : String) -> String {
     result = result + to_upper(s[i]).to_string()
   }
   result
+}
+
+///|
+pub fn is_punct(r : Char) -> Bool {
+  // 处理ASCII范围内的标点符号
+  if r <= MaxASCII {
+    // ASCII标点符号范围
+    return (r >= '!' && r <= '/') || // ! " # $ % & ' ( ) * + , - . /
+      (r >= ':' && r <= '@') || // : ; < = > ? @
+      (r >= '[' && r <= '`') || // [ \ ] ^ _ `
+      (r >= '{' && r <= '~') // { | } ~
+  }
+
+  // 处理Latin1范围内的标点符号
+  if r <= MaxLatin1 {
+    let code = r.to_int()
+
+    // Latin1标点符号列表（明确列出，而非范围）
+    let latin1_puncts = [
+      0x00A1, // ¡ 倒置叹号
+       0x00A2, // ¢ 美分符号
+       0x00A3, // £ 英镑符号
+       0x00A4, // ¤ 货币符号
+       0x00A5, // ¥ 日元符号
+       0x00A6, // ¦ 断竖线
+       0x00A7, // § 章节符号
+       0x00A8, // ¨ 分音符
+       0x00A9, // © 版权符号
+       0x00AA, // ª 阴性序数记号
+       0x00AB, // « 左角引号
+       0x00AC, // ¬ 否定符号
+       0x00AE, // ® 注册商标
+       0x00AF, // ¯ 长音符
+       0x00B0, // ° 度数符号
+      // 注意：0x00B1 (±) 被排除了，因为它是数学符号
+       0x00B2, // ² 上标2
+       0x00B3, // ³ 上标3
+       0x00B4, // ´ 锐音符
+       0x00B5, // µ 微符号
+       0x00B6, // ¶ 段落符号
+       0x00B7, // · 中点符号
+       0x00B8, // ¸ 下加符
+       0x00B9, // ¹ 上标1
+       0x00BA, // º 阳性序数记号
+       0x00BB, // » 右角引号
+       0x00BC, // ¼ 四分之一
+       0x00BD, // ½ 二分之一
+       0x00BE, // ¾ 四分之三
+       0x00BF, // ¿ 倒置问号
+       0x00D7, // × 乘号
+       0x00F7, // ÷ 除号
+    ]
+
+    // 检查是否在列表中
+    for i = 0; i < latin1_puncts.length(); i = i + 1 {
+      if code == latin1_puncts[i] {
+        return true
+      }
+    }
+    return false
+  }
+
+  // 处理其他Unicode范围的标点符号
+  return is_excluding_latin_punct(r)
+}
+
+///| 检查非Latin1范围内的标点符号
+fn is_excluding_latin_punct(r : Char) -> Bool {
+  let code = r.to_int()
+
+  // 排除一些特定的符号范围
+  // 特殊处理某些数学运算符，将它们视为标点
+  if code == 0x2260 { // ≠ (不等号)
+    return true
+  }
+  // 排除数学运算符
+  if code >= 0x2200 && code <= 0x22FF {
+    return false
+  }
+
+  // 排除全角数字 (0xFF10-0xFF19)
+  if code >= 0xFF10 && code <= 0xFF19 {
+    return false
+  }
+
+  // 排除全角字母 (0xFF21-0xFF5A)
+  if (code >= 0xFF21 && code <= 0xFF3A) || (code >= 0xFF41 && code <= 0xFF5A) {
+    return false
+  }
+
+  // 判断Unicode标点符号范围
+  let ranges = [
+    // 常见Unicode标点符号范围
+
+    // 一般标点
+    0x2000, 0x206F, 0, // General Punctuation
+
+    // 上标和下标
+     0x2070, 0x209F, 0, // Superscripts and Subscripts (部分为标点)
+
+    // 货币符号
+     0x20A0, 0x20CF, 0, // Currency Symbols
+
+    // 类字母符号
+     0x2100, 0x214F, 0, // Letterlike Symbols
+
+    // 数字形式
+     0x2150, 0x218F, 0, // Number Forms
+
+    // 箭头
+     0x2190, 0x21FF, 0, // Arrows
+
+    // 杂项技术符号
+     0x2300, 0x23FF, 0, // Miscellaneous Technical
+
+    // 控制图形
+     0x2400, 0x243F, 0, // Control Pictures
+
+    // 封闭字母数字
+     0x2460, 0x24FF, 0, // Enclosed Alphanumerics
+
+    // 方框制图
+     0x2500, 0x257F, 0, // Box Drawing
+
+    // 块元素
+     0x2580, 0x259F, 0, // Block Elements
+
+    // 几何形状
+     0x25A0, 0x25FF, 0, // Geometric Shapes
+
+    // 杂项符号
+     0x2600, 0x26FF, 0, // Miscellaneous Symbols
+
+    // 追加符号
+     0x2E00, 0x2E7F, 0, // Supplemental Punctuation
+
+    // CJK标点符号
+     0x3000, 0x303F, 0, // CJK Symbols and Punctuation
+
+    // 全角ASCII变体标点 - 重新定义为不包含数字和字母的范围
+     0xFF00, 0xFF0F, 0, // Fullwidth ASCII variants (非字母数字部分)
+     0xFF1A, 0xFF20, 0, // Fullwidth ASCII variants (非字母数字部分)
+     0xFF3B, 0xFF40, 0, // Fullwidth ASCII variants (非字母数字部分)
+     0xFF5B, 0xFF65, 0, // Fullwidth ASCII variants (非字母数字部分)
+
+    // 小形变体标点
+     0xFE50, 0xFE6F, 0, // Small Form Variants (标点部分)
+
+    // 移除了过于宽泛的范围: 0xFF00, 0xFFEF
+  ]
+
+  // 检查是否在范围内
+  if search_range(ranges, code) {
+    return true
+  }
+
+  // 额外检查一些散布各处的标点符号
+  // 这里列出一些常见单独的标点符号
+  let individual_puncts = [
+    0x037E, // 希腊问号
+     0x0387, // 希腊中点符号
+     0x055A, 0x055F, // 亚美尼亚标点
+     0x0589, // 亚美尼亚全角停顿
+     0x05BE, // 希伯来连字符
+     0x05C0, // 希伯来标点
+     0x05C3, // 希伯来标点
+     0x05F3, 0x05F4, // 希伯来标点
+     0x060C, 0x061B, // 阿拉伯标点
+     0x061F, // 阿拉伯问号
+     0x066A, 0x066D, // 阿拉伯标点
+     0x06D4, // 阿拉伯标点
+     0x0700, 0x070D, // 叙利亚标点
+     0x0964, 0x0965, // 天城文标点
+     0x0970, // 天城文标点
+     0x0DF4, // 僧伽罗标点
+     0x0E4F, // 泰文标点
+     0x0E5A, 0x0E5B, // 泰文标点
+     0x0F04, 0x0F12, // 藏文标点
+     0x0F3A, 0x0F3D, // 藏文标点
+     0x0F85, // 藏文标点
+     0x104A, 0x104F, // 缅甸标点
+     0x10FB, // 格鲁吉亚标点
+  ]
+
+  // 检查单独的标点符号
+  for i = 0; i < individual_puncts.length(); i = i + 1 {
+    if code == individual_puncts[i] {
+      return true
+    }
+  }
+  return false
 }

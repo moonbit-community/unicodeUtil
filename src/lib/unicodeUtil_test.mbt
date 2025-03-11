@@ -198,3 +198,100 @@ test "to_upper_special_unicode" {
   assert_eq!(to_upper('ａ'), 'Ａ')
   assert_eq!(to_upper('ｚ'), 'Ｚ')
 }
+
+///|
+test "is_punct_ascii" {
+  // ASCII 标点符号测试
+  assert_true!(is_punct('!'))
+  assert_true!(is_punct('"'))
+  assert_true!(is_punct('#'))
+  assert_true!(is_punct('$'))
+  assert_true!(is_punct('%'))
+  assert_true!(is_punct('&'))
+  assert_true!(is_punct('\''))
+  assert_true!(is_punct('('))
+  assert_true!(is_punct(')'))
+  assert_true!(is_punct('*'))
+  assert_true!(is_punct('+'))
+  assert_true!(is_punct(','))
+  assert_true!(is_punct('-'))
+  assert_true!(is_punct('.'))
+  assert_true!(is_punct('/'))
+  assert_true!(is_punct(':'))
+  assert_true!(is_punct(';'))
+  assert_true!(is_punct('<'))
+  assert_true!(is_punct('='))
+  assert_true!(is_punct('>'))
+  assert_true!(is_punct('?'))
+  assert_true!(is_punct('@'))
+  assert_true!(is_punct('['))
+  assert_true!(is_punct('\\'))
+  assert_true!(is_punct(']'))
+  assert_true!(is_punct('^'))
+  assert_true!(is_punct('_'))
+  assert_true!(is_punct('`'))
+  assert_true!(is_punct('{'))
+  assert_true!(is_punct('|'))
+  assert_true!(is_punct('}'))
+  assert_true!(is_punct('~'))
+
+  // 非标点符号
+  assert_false!(is_punct('a'))
+  assert_false!(is_punct('A'))
+  assert_false!(is_punct('0'))
+  assert_false!(is_punct(' '))
+}
+
+///|
+test "is_punct_latin1" {
+  // Latin1 标点符号测试
+  assert_true!(is_punct('¡')) // 倒置叹号
+  assert_true!(is_punct('¤')) // 货币符号
+  assert_true!(is_punct('§')) // 章节符号
+  assert_true!(is_punct('¿')) // 倒置问号
+  assert_true!(is_punct('×')) // 乘号
+  assert_true!(is_punct('÷')) // 除号
+}
+
+///|
+test "is_punct_unicode" {
+  // Unicode 标点符号测试
+  assert_true!(is_punct('—')) // Em dash
+  assert_true!(is_punct('…')) // 省略号
+  assert_true!(is_punct('•')) // 项目符号
+  assert_true!(is_punct('※')) // 参考标记
+  assert_true!(is_punct('★')) // 黑星
+  assert_true!(is_punct('→')) // 右箭头
+  assert_true!(is_punct('≠')) // 不等号
+
+  // 非标点符号
+  assert_false!(is_punct('é'))
+  assert_false!(is_punct('Ñ'))
+  assert_false!(is_punct('±')) // 加减号通常被视为数学符号而非标点
+  assert_true!(is_punct('—')) // Em dash
+  assert_true!(is_punct('…')) // 省略号
+  assert_true!(is_punct('•')) // 项目符号
+  assert_true!(is_punct('※')) // 参考标记
+  assert_true!(is_punct('★')) // 黑星
+  assert_true!(is_punct('→')) // 右箭头
+  assert_true!(is_punct('≠')) // 不等号
+
+  // CJK 标点
+  assert_true!(is_punct('。')) // 句号
+  assert_true!(is_punct('、')) // 顿号
+  assert_true!(is_punct('「')) // 左引号
+  assert_true!(is_punct('」')) // 右引号
+  assert_true!(is_punct('，')) // 逗号
+  assert_true!(is_punct('！')) // 感叹号
+
+  // 全角ASCII标点
+  assert_true!(is_punct('．')) // 全角句点
+  assert_true!(is_punct('：')) // 全角冒号
+  assert_true!(is_punct('？')) // 全角问号
+
+  // 非标点符号
+  assert_false!(is_punct('あ')) // 日语平假名
+  assert_false!(is_punct('漢')) // 汉字
+  assert_false!(is_punct('א')) // 希伯来字母
+  assert_false!(is_punct('１')) // 全角数字
+}
