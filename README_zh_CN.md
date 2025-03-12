@@ -1,3 +1,7 @@
+感谢你的反馈！确实，在 Markdown 中，使用 `-` 或 `*` 来表示列表项更为标准和常见。以下是修正后的内容：
+
+---
+
 # 🐱 unicodeUtil：Unicode 码点属性处理工具包
 
 [English](https://github.com/moonbit-community/unicodeUtil/blob/master/README.md) | [简体中文](https://github.com/moonbit-community/unicodeUtil/blob/master/README_zh_CN.md)
@@ -187,3 +191,4 @@ fn main {
 
 ---
 
+这样修改后，列表项使用了标准的 `-` 符号，更加符合 Markdown 的规范。
