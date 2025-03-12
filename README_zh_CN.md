@@ -35,14 +35,14 @@ moon add kesmeey/unicodeUtil
 
 ### 🔍 **判断字符是否为数字**
 
-`is_digit` 函数用于判断字符是否为数字，支持多种 Unicode 数字表达。
+`is_number` 函数用于判断字符是否为数字，支持多种 Unicode 数字表达( 阿拉伯数字,泰文数字,汉字数字等)。
 
 ```moonbit
 fn main {
-  println(@lib.is_digit('0')) // true  (ASCII 数字)
-  println(@lib.is_digit('a')) // false (ASCII 非数字字符)
-  println(@lib.is_digit('٩')) // true  (阿拉伯数字)
-  println(@lib.is_digit('か')) // false (日语假名)
+  println(@lib.is_number('0')) // true  (ASCII 数字)
+  println(@lib.is_number('一')) // true (汉字的一)
+  println(@lib.is_number('٩')) // true  (阿拉伯数字)
+  println(@lib.is_number('か')) // false (日语假名)
 }
 ```
 
