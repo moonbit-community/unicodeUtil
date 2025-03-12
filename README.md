@@ -33,20 +33,25 @@ moon add kesmeey/unicodeUtil
 
 ---
 
-### 🔍 **Check if a Character is a Digit**
+Here is the translation:
 
-The `is_digit` function checks if a character is a digit, supporting various Unicode digit representations.
+---
+
+### 🔍 **Check if a Character is a Number**
+
+The `is_number` function is used to determine whether a character is a number, supporting various Unicode numeric representations (e.g., Arabic numerals, Thai numerals, Chinese numerals, etc.).
 
 ```moonbit
 fn main {
-  println(@lib.is_digit('0')) // true  (ASCII digit)
-  println(@lib.is_digit('a')) // false (ASCII non-digit)
-  println(@lib.is_digit('٩')) // true  (Arabic digit)
-  println(@lib.is_digit('か')) // false (Japanese kana)
+  println(@lib.is_number('0')) // true  (ASCII digit)
+  println(@lib.is_number('一')) // true (Chinese numeral for "one")
+  println(@lib.is_number('٩')) // true  (Arabic numeral)
+  println(@lib.is_number('か')) // false (Japanese kana)
 }
 ```
 
 ---
+
 
 ### 🔍 **Check if a Character is a Letter**
 

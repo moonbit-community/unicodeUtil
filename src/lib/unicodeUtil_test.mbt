@@ -1,7 +1,7 @@
 ///|
 test "is_digit" {
   // ASCII 数字 (0-9)
-  assert_true!(is_digit('0'))
+  assert_true!(is_digit('1'))
   assert_true!(is_digit('5'))
   assert_true!(is_digit('9'))
 
@@ -680,4 +680,98 @@ test "is_symbol" {
   assert_false!(is_symbol('\n')) // 控制字符
   assert_false!(is_symbol('α')) // 希腊字母
   assert_false!(is_symbol('漢')) // 汉字
+}
+
+///| 测试数字识别功能
+test "is_number" {
+  // 基本数字（通过is_digit已经识别）
+  assert_true!(is_number('0'))
+  assert_true!(is_number('1'))
+  assert_true!(is_number('9'))
+
+  // 全角数字
+  assert_true!(is_number('０'))
+  assert_true!(is_number('１'))
+  assert_true!(is_number('９'))
+
+  // 特殊数字字符
+  assert_true!(is_number('²')) // 平方
+  assert_true!(is_number('³')) // 立方
+  assert_true!(is_number('¹')) // 一次方
+  assert_true!(is_number('¼')) // 四分之一
+  assert_true!(is_number('½')) // 二分之一
+  assert_true!(is_number('¾')) // 四分之三
+  assert_true!(is_number('⅓')) // 三分之一
+  assert_true!(is_number('⅔')) // 三分之二
+
+  // 罗马数字
+  assert_true!(is_number('Ⅰ')) // 罗马数字 I
+  assert_true!(is_number('Ⅴ')) // 罗马数字 V
+  assert_true!(is_number('Ⅹ')) // 罗马数字 X
+  assert_true!(is_number('ⅰ')) // 罗马小写数字 i
+  assert_true!(is_number('ⅴ')) // 罗马小写数字 v
+  assert_true!(is_number('ⅹ')) // 罗马小写数字 x
+
+  // 上标和下标数字
+  assert_true!(is_number('⁰')) // 上标 0
+  assert_true!(is_number('⁹')) // 上标 9
+  assert_true!(is_number('₀')) // 下标 0
+  assert_true!(is_number('₉')) // 下标 9
+
+  // 封闭式数字
+  assert_true!(is_number('①')) // 圆圈数字 1
+  assert_true!(is_number('⑩')) // 圆圈数字 10
+  assert_true!(is_number('⑴')) // 括号数字 1
+  assert_true!(is_number('⒑')) // 括号数字 10
+
+  // 各种语言的数字
+  assert_true!(is_number('٠')) // 阿拉伯-印度数字 0
+  assert_true!(is_number('٩')) // 阿拉伯-印度数字 9
+  assert_true!(is_number('۰')) // 东阿拉伯-印度数字 0
+  assert_true!(is_number('۹')) // 东阿拉伯-印度数字 9
+  assert_true!(is_number('०')) // 天城文数字 0
+  assert_true!(is_number('९')) // 天城文数字 9
+
+  // 汉字数字
+  assert_true!(is_number('一')) // 汉字 "一"
+  assert_true!(is_number('二')) // 汉字 "二"
+  assert_true!(is_number('三')) // 汉字 "三"
+  assert_true!(is_number('十')) // 汉字 "十"
+  assert_true!(is_number('百')) // 汉字 "百"
+  assert_true!(is_number('千')) // 汉字 "千"
+  assert_true!(is_number('万')) // 汉字 "万"
+  assert_true!(is_number('亿')) // 汉字 "亿"
+  assert_true!(is_number('〇')) // 汉字 "零"
+
+  // 非数字字符
+  assert_false!(is_number('a')) // 字母
+  assert_false!(is_number('A')) // 字母
+  assert_false!(is_number('$')) // 符号
+  assert_false!(is_number('.')) // 标点符号
+  assert_false!(is_number(' ')) // 空格
+  assert_false!(is_number('\n')) // 控制字符
+  assert_false!(is_number('漢')) // 非数字汉字
+}
+
+///| 测试is_number和is_digit的关系
+test "is_number_vs_is_digit" {
+  // 基本数字两者都应该返回true
+  assert_true!(is_digit('0'))
+  assert_true!(is_number('0'))
+  assert_true!(is_digit('9'))
+  assert_true!(is_number('9'))
+
+  // 扩展数字形式只有is_number应该返回true
+  assert_false!(is_digit('①')) // 封闭数字不是基本数字
+  assert_true!(is_number('①'))
+  assert_false!(is_digit('½')) // 分数不是基本数字
+  assert_true!(is_number('½'))
+  assert_false!(is_digit('Ⅰ')) // 罗马数字不是基本数字
+  assert_true!(is_number('Ⅰ'))
+  assert_false!(is_digit('一')) // 汉字数字不是基本数字
+  assert_true!(is_number('一'))
+
+  // 非数字两者都应该返回false
+  assert_false!(is_digit('a'))
+  assert_false!(is_number('a'))
 }

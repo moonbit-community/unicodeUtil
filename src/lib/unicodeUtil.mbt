@@ -840,3 +840,107 @@ pub fn is_symbol(r : Char) -> Bool {
   }
   return false
 }
+///| 判断字符是否为数字
+///| 扩展自is_digit，包括各种脚本的数字、分数、罗马数字等
+pub fn is_number(r: Char) -> Bool {
+  // 首先检查是否为基本数字（使用现有的is_digit函数）
+  if is_digit(r) {
+    return true
+  }
+  
+  let code = r.to_int()
+  
+  // 全角数字 (０-９)
+  if code >= 0xFF10 && code <= 0xFF19 {
+    return true
+  }
+  
+  // 1. 数字形式 (Number Forms)
+  // 包含分数、罗马数字等
+  if code >= 0x2150 && code <= 0x218F {
+    return true
+  }
+  
+  // 2. 上标和下标数字 (Superscripts and Subscripts)
+  if (code >= 0x2070 && code <= 0x2079) || // 上标数字
+     (code >= 0x2080 && code <= 0x2089) {  // 下标数字
+    return true
+  }
+  
+  // 3. 封闭式数字 (Enclosed Alphanumerics - 数字部分)
+  if (code >= 0x2460 && code <= 0x2473) || // 圆圈数字1-20
+     (code >= 0x2474 && code <= 0x2487) || // 括号数字1-20
+     (code >= 0x2488 && code <= 0x249B) || // 点数字1-20
+     (code >= 0x24EA && code <= 0x24FF) {  // 圆圈数字0和11-20
+    return true
+  }
+  
+  // 4. 数学数字 (Mathematical Alphanumeric Symbols - 数字部分)
+  if code >= 0x1D7CE && code <= 0x1D7FF {
+    return true
+  }
+  
+  // 5. 阿拉伯数字 (Arabic-Indic Digits)
+  if code >= 0x0660 && code <= 0x0669 {
+    return true
+  }
+  
+  // 6. 东阿拉伯数字 (Eastern Arabic-Indic Digits)
+  if code >= 0x06F0 && code <= 0x06F9 {
+    return true
+  }
+  
+  // 7. 天城文数字 (Devanagari Digits)
+  if code >= 0x0966 && code <= 0x096F {
+    return true
+  }
+  
+  // 8. 孟加拉数字 (Bengali Digits)
+  if code >= 0x09E6 && code <= 0x09EF {
+    return true
+  }
+  
+  // 9. 泰文数字 (Thai Digits)
+  if code >= 0x0E50 && code <= 0x0E59 {
+    return true
+  }
+  
+  
+  for i = 0; i < han_nums.length(); i = i + 1 {
+    if code == han_nums[i] {
+      return true
+    }
+  }
+  
+  // 11. 其他印度语系数字
+  if (code >= 0x0A66 && code <= 0x0A6F) || // 古吉拉特数字
+     (code >= 0x0AE6 && code <= 0x0AEF) || // 古吉拉特数字
+     (code >= 0x0B66 && code <= 0x0B6F) || // 奥里亚数字
+     (code >= 0x0BE6 && code <= 0x0BEF) || // 泰米尔数字
+     (code >= 0x0C66 && code <= 0x0C6F) || // 泰卢固数字
+     (code >= 0x0CE6 && code <= 0x0CEF) || // 卡纳达数字
+     (code >= 0x0D66 && code <= 0x0D6F) {  // 马拉雅拉姆数字
+    return true
+  }
+  
+  // 12. 东亚数字
+  if (code == 0x3007) || // 〇 (零)
+     (code >= 0x3021 && code <= 0x3029) || // 汉字数字 (一至九)
+     (code >= 0x3038 && code <= 0x303A) {  // 汉字数字 (十、廿、卅)
+    return true
+  }
+  
+  // 13. 罗马数字
+  if (code >= 0x2160 && code <= 0x2182) || // 罗马数字大写 I-M
+     (code >= 0x2170 && code <= 0x2188) {  // 罗马数字小写 i-m
+    return true
+  }
+
+  for i = 0; i < special_nums.length(); i = i + 1 {
+    if code == special_nums[i] {
+      return true
+    }
+  }
+  
+  return false
+}
