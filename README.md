@@ -1,4 +1,3 @@
-Here’s the English translation of the content, maintaining clarity and adhering to Markdown standards:
 
 ---
 
