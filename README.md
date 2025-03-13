@@ -1,18 +1,22 @@
-# 🐱 unicodeUtil: Unicode Codepoint Property Handling Toolkit
+Here’s the English translation of the content, maintaining clarity and adhering to Markdown standards:
+
+---
+
+# 🐱 unicodeUtil: Unicode Code Point Property Toolkit
 
 [English](https://github.com/moonbit-community/unicodeUtil/blob/master/README.md) | [简体中文](https://github.com/moonbit-community/unicodeUtil/blob/master/README_zh_CN.md)
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/moonbit-community/unicodeUtil/ci.yml)](https://github.com/moonbit-community/unicodeUtil/actions)  [![License](https://img.shields.io/github/license/moonbit-community/unicodeUtil)](LICENSE)  [![codecov](https://codecov.io/gh/moonbit-community/NyaSearch/branch/main/graph/badge.svg)](https://codecov.io/gh/moonbit-community/unicodeUtil)  
+[![Build Status](https://img.shields.io/github/actions/workflow/status/moonbit-community/unicodeUtil/ci.yml)](https://github.com/moonbit-community/unicodeUtil/actions) [![License](https://img.shields.io/github/license/moonbit-community/unicodeUtil)](LICENSE)  [![codecov](https://codecov.io/gh/moonbit-community/NyaSearch/branch/main/graph/badge.svg)](https://codecov.io/gh/moonbit-community/unicodeUtil)  
 
-`unicodeUtil` is a toolkit for handling Unicode codepoint properties, providing various functions to test the properties of Unicode codepoints, including checking if a character is a number, case conversion, and more. It supports multiple Unicode character sets and is suitable for internationalized application development, text processing, and character analysis.
+`unicodeUtil` is a toolkit for handling Unicode code point properties. It provides various functions to test Unicode code point attributes, such as checking if a character is a number, converting case, and more. It supports multiple Unicode character sets and is suitable for internationalization, text processing, and character analysis.
 
 ---
 
 ## 🚀 **Key Features**
 
-• 🔍 **Unicode Number Check** – Supports multiple Unicode number representations.  
+• 🔍 **Unicode Number Detection** – Supports multiple Unicode number representations.  
 • ⚡ **Case Conversion** – Supports case conversion for various Unicode characters.  
-• 📍 **Punctuation Check** – Supports checking for various Unicode punctuation marks, including common punctuation (e.g., periods, commas), special symbols (e.g., Em dash, ellipsis), and full-width punctuation.  
+• 📍 **Punctuation Detection** – Supports detection of various Unicode punctuation marks, including common punctuation (e.g., periods, commas), special symbols (e.g., Em dash, ellipsis), and full-width punctuation.  
 • 🛠 **Easy to Use** – Provides a simple API for quick integration.  
 • ✅ **Extensively Tested** – Tested with a wide range of Unicode characters.  
 • 🔄 **Open Source** – Actively maintained by the Moonbit community.  
@@ -29,18 +33,18 @@ moon add kesmeey/unicodeUtil
 
 ## 🚀 **Usage Guide**
 
-`unicodeUtil` offers various functions to handle the properties of Unicode characters. Below are some examples of commonly used features:
+`unicodeUtil` offers a variety of functions to handle Unicode character properties. Below are examples of some commonly used features:
 
 ---
 
 ### 🔍 **Check if a Character is a Number**
 
-The `is_number` function checks if a character is a number, supporting multiple Unicode number representations (e.g., Arabic numerals, Thai numerals, Chinese numerals, etc.).
+The `is_number` function checks if a character is a number, supporting various Unicode number representations (e.g., Arabic numerals, Thai numerals, Chinese numerals).
 
 ```moonbit
 fn main {
   println(@lib.is_number('0')) // true  (ASCII number)
-  println(@lib.is_number('一')) // true (Chinese numeral)
+  println(@lib.is_number('一')) // true  (Chinese numeral)
   println(@lib.is_number('٩')) // true  (Arabic numeral)
   println(@lib.is_number('か')) // false (Japanese kana)
 }
@@ -50,7 +54,7 @@ fn main {
 
 ### 🔍 **Check if a Character is a Letter**
 
-The `is_letter` function checks if a character is a letter, supporting multiple Unicode letter representations.
+The `is_letter` function checks if a character is a letter, supporting various Unicode letter representations.
 
 ```moonbit
 fn main {
@@ -73,7 +77,7 @@ fn main {
   println(@lib.to_lower('É')) // 'é'  (Latin1 uppercase letter)
   println(@lib.to_lower('Α')) // 'α'  (Greek letter)
   println(@lib.to_lower('İ')) // 'i'  (Turkish character)
-  println(@lib.to_lower('☺')) // '☺' (Non-letter character, unchanged)
+  println(@lib.to_lower('☺')) // '☺' (non-letter character, unchanged)
 }
 ```
 
@@ -90,7 +94,7 @@ fn main {
   println(@lib.to_upper('α')) // 'Α'  (Greek letter)
   println(@lib.to_upper('ı')) // 'I'  (Turkish character)
   println(@lib.to_upper('ß')) // 'ẞ'  (German character)
-  println(@lib.to_upper('漢')) // '漢' (Non-letter character, unchanged)
+  println(@lib.to_upper('漢')) // '漢' (non-letter character, unchanged)
 }
 ```
 
@@ -104,9 +108,9 @@ The `is_punct` function checks if a character is punctuation, supporting various
 fn main {
   println(@lib.is_punct('—')) // true  (Em dash)
   println(@lib.is_punct('≠')) // true  (Not equal sign)
-  println(@lib.is_punct('é')) // false (Non-punctuation character)
-  println(@lib.is_punct('．')) // true  (Full-width period)
-  println(@lib.is_punct('？')) // true  (Full-width question mark)
+  println(@lib.is_punct('é')) // false (non-punctuation character)
+  println(@lib.is_punct('．')) // true  (full-width period)
+  println(@lib.is_punct('？')) // true  (full-width question mark)
 }
 ```
 
@@ -118,10 +122,10 @@ The `is_mark` function checks if a character is a mark, supporting various Unico
 
 ```moonbit
 fn main {
-  println(@lib.is_mark('\u0300')) // true  (Accent mark)
+  println(@lib.is_mark('\u0300')) // true  (accent mark)
   println(@lib.is_mark('\u0591')) // true  (Hebrew mark)
-  println(@lib.is_mark('1'))      // false (Number)
-  println(@lib.is_mark('ä'))      // false (Combining character)
+  println(@lib.is_mark('1'))      // false (number)
+  println(@lib.is_mark('ä'))      // false (composed character)
 }
 ```
 
@@ -135,23 +139,23 @@ The `is_control` function checks if a character is a control character, supporti
 fn main {
   println(@lib.is_control('\u0008')) // true  (BACKSPACE)
   println(@lib.is_control('\u200D')) // true  (ZERO WIDTH JOINER)
-  println(@lib.is_control('1'))      // false (Number)
-  println(@lib.is_control('\u2022')) // false (Bullet symbol)
+  println(@lib.is_control('1'))      // false (number)
+  println(@lib.is_control('\u2022')) // false (bullet symbol)
 }
 ```
 
 ---
 
-### 📍 **Check if a Character is a Whitespace Character**
+### 📍 **Check if a Character is Whitespace**
 
-The `is_space` function checks if a character is a whitespace character, supporting various Unicode whitespace characters.
+The `is_space` function checks if a character is whitespace, supporting various Unicode whitespace characters.
 
 ```moonbit
 fn main {
-  println(@lib.is_space(' '))       // true  (Space)
-  println(@lib.is_space('\u2000')) // true  (En space)
-  println(@lib.is_space('6'))       // false (Number)
-  println(@lib.is_space('.'))       // false (Punctuation)
+  println(@lib.is_space(' '))       // true  (space)
+  println(@lib.is_space('\u2000')) // true  (half-width space)
+  println(@lib.is_space('6'))       // false (number)
+  println(@lib.is_space('.'))       // false (punctuation)
 }
 ```
 
@@ -163,10 +167,40 @@ The `is_symbol` function checks if a character is a symbol (e.g., mathematical s
 
 ```moonbit
 fn main {
-  println(@lib.is_symbol('$')) // true  (Dollar sign)
-  println(@lib.is_symbol('¢')) // true  (Cent sign)
-  println(@lib.is_symbol('6')) // true  (Geometric symbol)
+  println(@lib.is_symbol('$')) // true  (dollar sign)
+  println(@lib.is_symbol('¢')) // true  (cent sign)
+  println(@lib.is_symbol('6')) // true  (geometric symbol)
   println(@lib.is_symbol('字')) // false (Chinese character)
+}
+```
+
+---
+
+### 📍 **Check if a Character is Printable**
+
+The `is_print` function checks if a character is printable (e.g., letters, Chinese characters), supporting various Unicode symbols.
+
+```moonbit
+fn main {
+  println(@lib.is_print('a')) // true  (letter 'a')
+  println(@lib.is_print('.')) // true  (punctuation '.')
+  println(@lib.is_print('梦')) // true  (Chinese character '梦')
+  println(@lib.is_print('\n')) // false (newline is not printable)
+}
+```
+
+---
+
+### 📍 **Check if a Character is Graphic**
+
+The `is_graphic` function checks if a character is graphic (e.g., letters, Chinese characters), supporting various Unicode symbols.
+
+```moonbit
+fn main {
+  println(@lib.is_graphic('a')) // true  (letter 'a')
+  println(@lib.is_graphic('\u0300')) // true  (combining accent mark)
+  println(@lib.is_graphic('$')) // true  (dollar sign)
+  println(@lib.is_graphic('u0000')) // false (NULL)
 }
 ```
 
@@ -174,15 +208,16 @@ fn main {
 
 ## 📜 **License**
 
-This project is licensed under the Apache-2.0 License. For details, see [LICENSE](https://github.com/moonbit-community/unicodeUtil/blob/main/LICENSE).
+This project is licensed under the Apache-2.0 License. See [LICENSE](https://github.com/moonbit-community/unicodeUtil/blob/main/LICENSE) for details.
 
 ---
 
 ## 📢 **Contact & Support**
 
 • Moonbit Community: [moonbit-community](https://github.com/moonbit-community)  
-• GitHub Issues: [Report Issues](https://github.com/moonbit-community/unicodeUtil/issues)  
+• GitHub Issues: [Report an Issue](https://github.com/moonbit-community/unicodeUtil/issues)  
 
 👋 If you like this project, give it a ⭐! Happy coding! 🚀  
 
 ---
+

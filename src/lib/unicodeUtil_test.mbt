@@ -775,3 +775,106 @@ test "is_number_vs_is_digit" {
   assert_false!(is_digit('a'))
   assert_false!(is_number('a'))
 }
+
+///| 测试图形字符识别功能
+test "is_graphic" {
+  // 字母
+  assert_true!(is_graphic('a'))
+  assert_true!(is_graphic('Z'))
+  assert_true!(is_graphic('ä'))
+  assert_true!(is_graphic('漢'))
+
+  // 标记符号
+  assert_true!(is_graphic('\u0300')) // 组合重音符号
+
+  // 数字
+  assert_true!(is_graphic('0'))
+  assert_true!(is_graphic('9'))
+  assert_true!(is_graphic('①'))
+
+  // 标点符号
+  assert_true!(is_graphic('.'))
+  assert_true!(is_graphic(','))
+  assert_true!(is_graphic('!'))
+
+  // 符号
+  assert_true!(is_graphic('$'))
+  assert_true!(is_graphic('+'))
+  assert_true!(is_graphic('©'))
+
+  // 空白字符
+  assert_true!(is_graphic(' ')) // ASCII 空格是图形字符
+  assert_true!(is_graphic('\u00A0')) // NBSP是图形字符
+  assert_true!(is_graphic('\u2002')) // EN SPACE是图形字符
+
+  // 非图形字符
+  assert_false!(is_graphic('\u0000')) // NULL
+  assert_false!(is_graphic('\u0007')) // BELL
+  assert_false!(is_graphic('\u001F')) // UNIT SEPARATOR
+}
+
+///| 测试可打印字符识别功能
+test "is_print" {
+  // 字母
+  assert_true!(is_print('a'))
+  assert_true!(is_print('Z'))
+  assert_true!(is_print('ä'))
+  assert_true!(is_print('漢'))
+
+  // 标记符号
+  assert_true!(is_print('\u0300')) // 组合重音符号
+
+  // 数字
+  assert_true!(is_print('0'))
+  assert_true!(is_print('9'))
+  assert_true!(is_print('①'))
+
+  // 标点符号
+  assert_true!(is_print('.'))
+  assert_true!(is_print(','))
+  assert_true!(is_print('!'))
+
+  // 符号
+  assert_true!(is_print('$'))
+  assert_true!(is_print('+'))
+  assert_true!(is_print('©'))
+
+  // 空白字符
+  assert_true!(is_print(' ')) // 仅ASCII空格是可打印的
+  assert_false!(is_print('\u00A0')) // NBSP不是可打印字符
+  assert_false!(is_print('\u2002')) // EN SPACE不是可打印字符
+  assert_false!(is_print('\t')) // 制表符不是可打印字符
+  assert_false!(is_print('\n')) // 换行符不是可打印字符
+
+  // 控制字符
+  assert_false!(is_print('\u0000')) // NULL
+  assert_false!(is_print('\u0007')) // BELL
+  assert_false!(is_print('\u001F')) // UNIT SEPARATOR
+}
+
+///| 测试is_graphic和is_print的关系
+test "is_graphic_vs_is_print" {
+  // 字母、数字、标点、符号都同时是图形字符和可打印字符
+  assert_true!(is_graphic('a'))
+  assert_true!(is_print('a'))
+  assert_true!(is_graphic('0'))
+  assert_true!(is_print('0'))
+  assert_true!(is_graphic('.'))
+  assert_true!(is_print('.'))
+
+  // ASCII空格同时是图形字符和可打印字符
+  assert_true!(is_graphic(' '))
+  assert_true!(is_print(' '))
+
+  // 其他空白字符是图形字符但不是可打印字符
+  assert_true!(is_graphic('\u00A0')) // NBSP
+  assert_false!(is_print('\u00A0'))
+  assert_true!(is_graphic('\u2002')) // EN SPACE
+  assert_false!(is_print('\u2002'))
+
+  // 控制字符既不是图形字符也不是可打印字符
+  assert_false!(is_graphic('\u0000'))
+  assert_false!(is_print('\u0000'))
+  assert_false!(is_graphic('\t'))
+  assert_false!(is_print('\t'))
+}
