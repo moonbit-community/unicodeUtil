@@ -1,6 +1,5 @@
 {
   "is-main": true,
-  "import": [
-       "kesmeey/unicodeUtil/lib"
-  ]
+  "import": []
 }
+

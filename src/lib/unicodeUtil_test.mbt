@@ -329,8 +329,8 @@ test "is_mark" {
 test "marks_with_base_char" {
   // 测试字符串中标记符号的识别
   let s = "e\u0301" // 'é' 分解形式（'e' + 锐音符号）
-  assert_false(is_mark(s[0])) // 'e' 不是标记
-  assert_true(is_mark(s[1])) // '\u0301' 是标记
+  assert_false(is_mark(s.get_char(0).unwrap())) // 'e' 不是标记
+  assert_true(is_mark(s.get_char(1).unwrap())) // '\u0301' 是标记
 
   // 注意：这里测试的是组合标记而非预组合字符
   // 'é' (U+00E9) 是预组合字符，不是标记
