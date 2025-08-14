@@ -1,12 +1,13 @@
 ///| Unicode 字符处理工具库
+
 ///| 提供字符分类、大小写转换等功能
 
 ///| Unicode 字符类别定义
-pub(all) type UnicodeCategory Int
+pub(all) struct UnicodeCategory(Int)
 
 ///|
 fn op_equal(self : UnicodeCategory, other : UnicodeCategory) -> Bool {
-  return self._ == other._
+  return self.inner() == other.inner()
 }
 
 ///|
@@ -63,12 +64,13 @@ pub(all) struct CaseRange {
 }
 
 ///| 特殊大小写转换规则
-pub(all) type SpecialCase Array[CaseRange]
+pub(all) struct SpecialCase(Array[CaseRange])
 
 ///| 阿塞拜疆语大小写转换规则（与土耳其语相同）
 let azeri_case : SpecialCase = turkish_case
 
 ///| 检查字符是否在指定的码点范围内
+
 ///| ranges格式: [start1, end1, start2, end2, ...]
 fn in_ranges(code : Int, ranges : Array[Int]) -> Bool {
   let mut i = 0
@@ -978,6 +980,7 @@ pub fn is_number(r : Char) -> Bool {
 }
 
 ///| 判断字符是否为图形字符
+
 ///| 图形字符包括字母、标记、数字、标点、符号及空白字符
 pub fn is_graphic(r : Char) -> Bool {
   // 使用组合函数来判断
@@ -1021,7 +1024,9 @@ pub fn is_graphic(r : Char) -> Bool {
 }
 
 ///| 判断字符是否为可打印字符
+
 ///| 包括字母、标记、数字、标点、符号以及ASCII空格(U+0020)
+
 ///|
 pub fn is_print(r : Char) -> Bool {
   let code = r.to_int()

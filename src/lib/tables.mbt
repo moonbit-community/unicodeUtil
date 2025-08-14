@@ -1,4 +1,5 @@
 //这里放置一些常量
+
 ///|
 const ReplacementChar = '\uFFFD' // Represents invalid code points.
 
@@ -305,6 +306,7 @@ pub let special_nums = [
 
 // 10. 汉字数字
 // 一、二、三、四、五、六、七、八、九、十、百、千、万、亿
+
 ///|
 pub let han_nums = [
   0x4E00, // 一
