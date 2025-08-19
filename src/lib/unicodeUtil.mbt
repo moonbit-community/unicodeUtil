@@ -1,12 +1,13 @@
 ///| Unicode 字符处理工具库
+
 ///| 提供字符分类、大小写转换等功能
 
 ///| Unicode 字符类别定义
-pub(all) type UnicodeCategory Int
+pub(all) struct UnicodeCategory(Int)
 
 ///|
-fn op_equal(self : UnicodeCategory, other : UnicodeCategory) -> Bool {
-  return self._ == other._
+impl @prelude.Eq for UnicodeCategory with op_equal(self, other) {
+  return self.inner() == other.inner()
 }
 
 ///|
@@ -63,12 +64,13 @@ pub(all) struct CaseRange {
 }
 
 ///| 特殊大小写转换规则
-pub(all) type SpecialCase Array[CaseRange]
+pub(all) struct SpecialCase(Array[CaseRange])
 
 ///| 阿塞拜疆语大小写转换规则（与土耳其语相同）
 let azeri_case : SpecialCase = turkish_case
 
 ///| 检查字符是否在指定的码点范围内
+
 ///| ranges格式: [start1, end1, start2, end2, ...]
 fn in_ranges(code : Int, ranges : Array[Int]) -> Bool {
   let mut i = 0
@@ -165,7 +167,7 @@ pub fn to_lower(r : Char) -> Char {
   // ASCII 范围内的快速处理
   if r <= MaxASCII {
     if 'A' <= r && r <= 'Z' {
-      return Char::from_int(code + ('a'.to_int() - 'A'.to_int()))
+      return Int::unsafe_to_char(code + ('a'.to_int() - 'A'.to_int()))
     }
     return r
   }
@@ -179,34 +181,34 @@ pub fn to_lower(r : Char) -> Char {
 
   // 1. 土耳其语/阿塞拜疆语特殊字符
   if code == 0x0049 { // I → ı
-    return Char::from_int(0x131)
+    return Int::unsafe_to_char(0x131)
   } else if code == 0x0130 { // İ → i
-    return Char::from_int(0x69)
+    return Int::unsafe_to_char(0x69)
   }
 
   // 2. 希腊字母
   if code >= 0x0391 && code <= 0x03A9 && code != 0x03A2 {
-    return Char::from_int(code + 32)
+    return Int::unsafe_to_char(code + 32)
   }
 
   // 3. 西里尔字母
   if code >= 0x0410 && code <= 0x042F {
-    return Char::from_int(code + 32)
+    return Int::unsafe_to_char(code + 32)
   }
 
   // 4. 亚美尼亚字母
   if code >= 0x0531 && code <= 0x0556 {
-    return Char::from_int(code + 48)
+    return Int::unsafe_to_char(code + 48)
   }
 
   // 5. 全角字母
   if code >= 0xFF21 && code <= 0xFF3A {
-    return Char::from_int(code + 32)
+    return Int::unsafe_to_char(code + 32)
   }
 
   // 6. 德语大写ẞ小写转换
   if code == 0x1E9E { // 大写的ẞ (U+1E9E)
-    return Char::from_int(0xDF) // 转换为小写的ß (U+00DF)
+    return Int::unsafe_to_char(0xDF) // 转换为小写的ß (U+00DF)
   }
 
   // 通用情况 - 如果没有特殊规则，返回原字符
@@ -220,7 +222,7 @@ pub fn to_upper(r : Char) -> Char {
   // ASCII 范围内的快速处理
   if r <= MaxASCII {
     if 'a' <= r && r <= 'z' {
-      return Char::from_int(code - ('a'.to_int() - 'A'.to_int()))
+      return Int::unsafe_to_char(code - ('a'.to_int() - 'A'.to_int()))
     }
     return r
   }
@@ -234,29 +236,29 @@ pub fn to_upper(r : Char) -> Char {
 
   // 1. 土耳其语/阿塞拜疆语特殊字符
   if code == 0x0069 { // i → İ
-    return Char::from_int(0x130)
+    return Int::unsafe_to_char(0x130)
   } else if code == 0x0131 { // ı → I
-    return Char::from_int(0x49)
+    return Int::unsafe_to_char(0x49)
   }
 
   // 2. 希腊字母
   if code >= 0x03B1 && code <= 0x03C9 {
-    return Char::from_int(code - 32)
+    return Int::unsafe_to_char(code - 32)
   }
 
   // 3. 西里尔字母
   if code >= 0x0430 && code <= 0x044F {
-    return Char::from_int(code - 32)
+    return Int::unsafe_to_char(code - 32)
   }
 
   // 4. 亚美尼亚字母
   if code >= 0x0561 && code <= 0x0586 {
-    return Char::from_int(code - 48)
+    return Int::unsafe_to_char(code - 48)
   }
 
   // 5. 全角字母
   if code >= 0xFF41 && code <= 0xFF5A {
-    return Char::from_int(code - 32)
+    return Int::unsafe_to_char(code - 32)
   }
 
   // 通用情况 - 如果没有特殊规则，返回原字符
@@ -269,7 +271,7 @@ pub fn to_title(r : Char) -> Char {
 
   // 希腊小写字母sigma的特殊处理
   if code == 0x03C3 { // 希腊小写字母sigma
-    return Char::from_int(0x03A3) // 希腊大写字母SIGMA
+    return Int::unsafe_to_char(0x03A3) // 希腊大写字母SIGMA
   }
 
   // 对于其他字符，使用大写形式
@@ -282,17 +284,17 @@ fn to_latin1_case(case_type : Int, r : Char) -> Char {
   if case_type == LowerCase {
     // 将大写转为小写
     if (code >= 0xC0 && code <= 0xD6) || (code >= 0xD8 && code <= 0xDE) {
-      return Char::from_int(code + 32)
+      return Int::unsafe_to_char(code + 32)
     }
   } else if case_type == UpperCase {
     // 将小写转为大写
     if (code >= 0xE0 && code <= 0xF6) || (code >= 0xF8 && code <= 0xFE) {
-      return Char::from_int(code - 32)
+      return Int::unsafe_to_char(code - 32)
     }
 
     // 德语ß大写转换
     if code == 0xDF { // 德语 ß
-      return Char::from_int(0x1E9E) // 转换为大写的ẞ (U+1E9E)
+      return Int::unsafe_to_char(0x1E9E) // 转换为大写的ẞ (U+1E9E)
     }
   }
   return r
@@ -300,20 +302,12 @@ fn to_latin1_case(case_type : Int, r : Char) -> Char {
 
 ///| 将字符串转换为小写
 pub fn string_to_lower(s : String) -> String {
-  let mut result = ""
-  for i = 0; i < s.length(); i = i + 1 {
-    result = result + to_lower(s[i]).to_string()
-  }
-  return result
+  s.iter().map(to_lower) |> String::from_iter
 }
 
 ///| 将字符串转换为大写
 pub fn string_to_upper(s : String) -> String {
-  let mut result = ""
-  for i = 0; i < s.length(); i = i + 1 {
-    result = result + to_upper(s[i]).to_string()
-  }
-  return result
+  s.iter().map(to_upper) |> String::from_iter
 }
 
 ///| 判断字符是否为标点符号
@@ -978,6 +972,7 @@ pub fn is_number(r : Char) -> Bool {
 }
 
 ///| 判断字符是否为图形字符
+
 ///| 图形字符包括字母、标记、数字、标点、符号及空白字符
 pub fn is_graphic(r : Char) -> Bool {
   // 使用组合函数来判断
@@ -1021,7 +1016,9 @@ pub fn is_graphic(r : Char) -> Bool {
 }
 
 ///| 判断字符是否为可打印字符
+
 ///| 包括字母、标记、数字、标点、符号以及ASCII空格(U+0020)
+
 ///|
 pub fn is_print(r : Char) -> Bool {
   let code = r.to_int()
