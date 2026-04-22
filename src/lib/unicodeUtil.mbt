@@ -68,31 +68,6 @@ pub(all) struct CaseRange {
 ///| 特殊大小写转换规则
 pub(all) struct SpecialCase(Array[CaseRange])
 
-///| 阿塞拜疆语大小写转换规则（与土耳其语相同）
-let azeri_case : SpecialCase = turkish_case
-
-///| 检查字符是否在指定的码点范围内
-
-///| ranges格式: [start1, end1, start2, end2, ...]
-fn in_ranges(code : Int, ranges : Array[Int]) -> Bool {
-  let mut i = 0
-  while i < ranges.length() {
-    if i + 1 < ranges.length() {
-      if code >= ranges[i] && code <= ranges[i + 1] {
-        return true
-      }
-      i = i + 2
-    } else {
-      // 处理单个码点的情况
-      if code == ranges[i] {
-        return true
-      }
-      i = i + 1
-    }
-  }
-  return false
-}
-
 ///| 在排序好的范围表中搜索一个码点
 fn search_range(ranges : Array[Int], target : Int) -> Bool {
   let mut i = 0

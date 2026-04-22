@@ -1,9 +1,6 @@
 //这里放置一些常量
 
 ///|
-const ReplacementChar = '\uFFFD' // Represents invalid code points.
-
-///|
 const MaxASCII = '\u007F' // maximum ASCII value.
 
 ///|
