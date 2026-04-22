@@ -2,7 +2,8 @@
 
 ///| 提供字符分类、大小写转换等功能
 
-///| Unicode 字符类别定义
+///|
+/// Unicode 字符类别定义
 pub(all) struct UnicodeCategory(Int)
 
 ///|
@@ -17,46 +18,60 @@ pub(open) trait Eq {
   method_(UnicodeCategory) -> Int
 }
 
-///| 大写字母类别
+///|
+/// 大写字母类别
 pub const UpperCase = 0
 
-///| 小写字母类别
+///|
+/// 小写字母类别
 pub const LowerCase = 1
 
-///| 标题形式字母类别
+///|
+/// 标题形式字母类别
 pub const TitleCase = 2
 
-///| 字母类别（通用）
+///|
+/// 字母类别（通用）
 pub const Letter = 3
 
-///| 数字类别
+///|
+/// 数字类别
 pub const Digit = 4
 
-///| 标点符号类别
+///|
+/// 标点符号类别
 pub const Punct = 5
 
-///| 标记符号类别
+///|
+/// 标记符号类别
 pub const Mark = 6
 
-///| 空白字符类别
+///|
+/// 空白字符类别
 pub const Space = 7
 
-///| 控制字符类别
+///|
+/// 控制字符类别
 pub const Control = 8
 
-///| 符号类别
+///|
+/// 符号类别
 pub const Symbol = 9
 
-///| 数字类别（扩展）
+///|
+/// 数字类别（扩展）
 pub const Number = 10
 
-///| 图形字符类别
+///|
+/// 图形字符类别
 pub const Graphic = 11
 
-///| 可打印字符类别
+///|
+/// 可打印字符类别
 pub const Print = 12
 
-///| Unicode 字符大小写转换范围
+///|
+/// Unicode 字符大小写转换范围
 pub(all) struct CaseRange {
   lo : Int // 范围起始
   hi : Int // 范围结束
@@ -65,10 +80,12 @@ pub(all) struct CaseRange {
   delta3 : Int // 标题转换增量
 }
 
-///| 特殊大小写转换规则
+///|
+/// 特殊大小写转换规则
 pub(all) struct SpecialCase(Array[CaseRange])
 
-///| 在排序好的范围表中搜索一个码点
+///|
+/// 在排序好的范围表中搜索一个码点
 fn search_range(ranges : ReadOnlyArray[Int], target : Int) -> Bool {
   let mut i = 0
   while i < ranges.length() {
@@ -82,7 +99,8 @@ fn search_range(ranges : ReadOnlyArray[Int], target : Int) -> Bool {
   return false
 }
 
-///| 判断字符是否为数字（基本数字0-9及全角数字０-９）
+///|
+/// 判断字符是否为数字（基本数字0-9及全角数字０-９）
 pub fn is_digit(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -108,7 +126,8 @@ pub fn is_digit(r : Char) -> Bool {
   return is_excluding_latin(Digit, r)
 }
 
-///| 检查非Latin1范围内的字符是否属于指定类别
+///|
+/// 检查非Latin1范围内的字符是否属于指定类别
 pub fn is_excluding_latin(category : UnicodeCategory, r : Char) -> Bool {
   let code = r.to_int()
 
@@ -137,7 +156,8 @@ pub fn is_excluding_latin(category : UnicodeCategory, r : Char) -> Bool {
   return false
 }
 
-///| 将字符转换为小写
+///|
+/// 将字符转换为小写
 pub fn to_lower(r : Char) -> Char {
   let code = r.to_int()
 
@@ -192,7 +212,8 @@ pub fn to_lower(r : Char) -> Char {
   return r
 }
 
-///| 将字符转换为大写
+///|
+/// 将字符转换为大写
 pub fn to_upper(r : Char) -> Char {
   let code = r.to_int()
 
@@ -242,7 +263,8 @@ pub fn to_upper(r : Char) -> Char {
   return r
 }
 
-///| 将字符转换为标题形式（通常与大写相同，特殊情况除外）
+///|
+/// 将字符转换为标题形式（通常与大写相同，特殊情况除外）
 pub fn to_title(r : Char) -> Char {
   let code = r.to_int()
 
@@ -255,7 +277,8 @@ pub fn to_title(r : Char) -> Char {
   return to_upper(r)
 }
 
-///| 处理Latin1范围内的大小写转换
+///|
+/// 处理Latin1范围内的大小写转换
 fn to_latin1_case(case_type : Int, r : Char) -> Char {
   let code = r.to_int()
   if case_type == LowerCase {
@@ -277,17 +300,20 @@ fn to_latin1_case(case_type : Int, r : Char) -> Char {
   return r
 }
 
-///| 将字符串转换为小写
+///|
+/// 将字符串转换为小写
 pub fn string_to_lower(s : String) -> String {
   s.iter().map(to_lower) |> String::from_iter
 }
 
-///| 将字符串转换为大写
+///|
+/// 将字符串转换为大写
 pub fn string_to_upper(s : String) -> String {
   s.iter().map(to_upper) |> String::from_iter
 }
 
-///| 判断字符是否为标点符号
+///|
+/// 判断字符是否为标点符号
 pub fn is_punct(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -314,7 +340,8 @@ pub fn is_punct(r : Char) -> Bool {
   return is_excluding_latin_punct(r)
 }
 
-///| 检查非Latin1范围内的标点符号
+///|
+/// 检查非Latin1范围内的标点符号
 fn is_excluding_latin_punct(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -352,7 +379,8 @@ fn is_excluding_latin_punct(r : Char) -> Bool {
   return false
 }
 
-///| 判断字符是否为标记符号
+///|
+/// 判断字符是否为标记符号
 pub fn is_mark(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -458,7 +486,8 @@ pub fn is_mark(r : Char) -> Bool {
   return false
 }
 
-///| 判断字符是否为空白字符
+///|
+/// 判断字符是否为空白字符
 pub fn is_space(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -508,7 +537,8 @@ pub fn is_space(r : Char) -> Bool {
     code == 0xFEFF // 零宽不换行空格
 }
 
-///| 判断字符是否为控制字符
+///|
+/// 判断字符是否为控制字符
 pub fn is_control(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -552,7 +582,8 @@ pub fn is_control(r : Char) -> Bool {
   return false
 }
 
-///| 判断字符是否为字母
+///|
+/// 判断字符是否为字母
 pub fn is_letter(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -695,7 +726,8 @@ pub fn is_letter(r : Char) -> Bool {
   return false
 }
 
-///| 判断字符是否为符号
+///|
+/// 判断字符是否为符号
 pub fn is_symbol(r : Char) -> Bool {
   let code = r.to_int()
 
@@ -843,7 +875,8 @@ pub fn is_symbol(r : Char) -> Bool {
 
 ///| 判断字符是否为数字（扩展定义）
 
-///| 判断字符是否为数字（扩展定义）
+///|
+/// 判断字符是否为数字（扩展定义）
 pub fn is_number(r : Char) -> Bool {
   // 基本数字也是数字
   if is_digit(r) {
@@ -950,7 +983,8 @@ pub fn is_number(r : Char) -> Bool {
 
 ///| 判断字符是否为图形字符
 
-///| 图形字符包括字母、标记、数字、标点、符号及空白字符
+///|
+/// 图形字符包括字母、标记、数字、标点、符号及空白字符
 pub fn is_graphic(r : Char) -> Bool {
   // 使用组合函数来判断
   // 图形字符 = 字母 + 标记 + 数字 + 标点 + 符号 + 空白

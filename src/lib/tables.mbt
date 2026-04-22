@@ -168,7 +168,8 @@ pub let numRanges : ReadOnlyArray[Int] = [
    0x0BE6, 0x0BEF, 0,
 ]
 
-///|土耳其字符特殊转化    
+///|
+///土耳其字符特殊转化    
 pub let turkish_case : SpecialCase = [
   CaseRange::{
     lo: 0x0049,
