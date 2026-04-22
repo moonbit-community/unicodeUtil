@@ -69,7 +69,7 @@ pub(all) struct CaseRange {
 pub(all) struct SpecialCase(Array[CaseRange])
 
 ///| 在排序好的范围表中搜索一个码点
-fn search_range(ranges : Array[Int], target : Int) -> Bool {
+fn search_range(ranges : ReadOnlyArray[Int], target : Int) -> Bool {
   let mut i = 0
   while i < ranges.length() {
     let start = ranges[i]
