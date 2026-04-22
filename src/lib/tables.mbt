@@ -7,7 +7,7 @@ const MaxASCII = '\u007F' // maximum ASCII value.
 const MaxLatin1 = '\u00FF' // maximum Latin-1 value.
 
 ///|
-pub let individual_puncts = [
+pub let individual_puncts : ReadOnlyArray[Int] = [
   0x037E, // 希腊问号
    0x0387, // 希腊中点符号
    0x055A, 0x055F, // 亚美尼亚标点
@@ -36,7 +36,7 @@ pub let individual_puncts = [
 // 判断Unicode标点符号范围
 
 ///|
-pub let ranges = [
+pub let ranges : ReadOnlyArray[Int] = [
   // 常见Unicode标点符号范围
 
   // 一般标点
@@ -99,7 +99,7 @@ pub let ranges = [
 // Latin1标点符号列表（明确列出，而非范围）
 
 ///|
-pub let latin1_puncts = [
+pub let latin1_puncts : ReadOnlyArray[Int] = [
   0x00A1, // ¡ 倒置叹号
    0x00A2, // ¢ 美分符号
    0x00A3, // £ 英镑符号
@@ -138,7 +138,7 @@ pub let latin1_puncts = [
 // 0表示这是个连续范围
 
 ///|
-pub let numRanges = [
+pub let numRanges : ReadOnlyArray[Int] = [
   // 阿拉伯数字 (Arabic-Indic digits)
   0x0660, 0x0669, 0,
   // 波斯数字 (Extended Arabic-Indic digits)
@@ -203,7 +203,7 @@ pub let turkish_case : SpecialCase = [
 // 部分标记字符特殊处理
 
 ///|
-pub let mark_chars = [
+pub let mark_chars : ReadOnlyArray[Int] = [
   // 上标符号 (Modifier Symbol)
   0x02B0, 0x02B8, // 上标小写字母
    0x02E0, 0x02E4, // 上标小写字母
@@ -222,7 +222,7 @@ pub let mark_chars = [
 // 常见 Unicode 空白字符
 
 ///|
-pub let space_chars = [
+pub let space_chars : ReadOnlyArray[Int] = [
   0x1680, 0, // 欧甘字母空格
    0x2000, 0x200A, // 各种宽度空格 (包含 0x2001, 0x2002, 0x2003 等)
    0x2028, 0, // 行分隔符
@@ -235,7 +235,7 @@ pub let space_chars = [
 // 其他重要的 Unicode 控制字符
 
 ///|
-pub let control_chars = [
+pub let control_chars : ReadOnlyArray[Int] = [
   0x061C, // 阿拉伯语标记 (ALM)
    0x070F, // 叙利亚语缩写标记
    0x180B, 0x180D, // 蒙古语母音分隔符
@@ -260,7 +260,7 @@ pub let control_chars = [
 // 例如：€ (欧元), ℃ (摄氏度), ™ (商标), № (编号),
 
 ///|
-pub let specific_symbols = [
+pub let specific_symbols : ReadOnlyArray[Int] = [
   0x20AC, // € (欧元符号)
    0x2103, // ℃ (摄氏度符号)
    0x2116, // № (编号符号)
@@ -285,7 +285,7 @@ pub let specific_symbols = [
 // 14. 特殊数字字符
 
 ///|
-pub let special_nums = [
+pub let special_nums : ReadOnlyArray[Int] = [
   0x00B2, // ² (平方)
    0x00B3, // ³ (立方)
    0x00B9, // ¹ (一次方)
@@ -305,7 +305,7 @@ pub let special_nums = [
 // 一、二、三、四、五、六、七、八、九、十、百、千、万、亿
 
 ///|
-pub let han_nums = [
+pub let han_nums : ReadOnlyArray[Int] = [
   0x4E00, // 一
    0x4E8C, // 二
    0x4E09, // 三
