@@ -6,8 +6,10 @@
 pub(all) struct UnicodeCategory(Int)
 
 ///|
-impl @prelude.Eq for UnicodeCategory with op_equal(self, other) {
-  return self.inner() == other.inner()
+impl @prelude.Eq for UnicodeCategory with equal(self, other) {
+  let UnicodeCategory(lhs) = self
+  let UnicodeCategory(rhs) = other
+  lhs == rhs
 }
 
 ///|
