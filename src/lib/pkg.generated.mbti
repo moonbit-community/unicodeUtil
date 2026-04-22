@@ -1,0 +1,106 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kesmeey/unicodeUtil/lib"
+
+// Values
+pub const Control : Int = 8
+
+pub const Digit : Int = 4
+
+pub const Graphic : Int = 11
+
+pub const Letter : Int = 3
+
+pub const LowerCase : Int = 1
+
+pub const Mark : Int = 6
+
+pub const Number : Int = 10
+
+pub const Print : Int = 12
+
+pub const Punct : Int = 5
+
+pub const Space : Int = 7
+
+pub const Symbol : Int = 9
+
+pub const TitleCase : Int = 2
+
+pub const UpperCase : Int = 0
+
+pub let control_chars : ReadOnlyArray[Int]
+
+pub let han_nums : ReadOnlyArray[Int]
+
+pub let individual_puncts : ReadOnlyArray[Int]
+
+pub fn is_control(Char) -> Bool
+
+pub fn is_digit(Char) -> Bool
+
+pub fn is_excluding_latin(UnicodeCategory, Char) -> Bool
+
+pub fn is_graphic(Char) -> Bool
+
+pub fn is_letter(Char) -> Bool
+
+pub fn is_mark(Char) -> Bool
+
+pub fn is_number(Char) -> Bool
+
+pub fn is_print(Char) -> Bool
+
+pub fn is_punct(Char) -> Bool
+
+pub fn is_space(Char) -> Bool
+
+pub fn is_symbol(Char) -> Bool
+
+pub let latin1_puncts : ReadOnlyArray[Int]
+
+pub let mark_chars : ReadOnlyArray[Int]
+
+pub let numRanges : ReadOnlyArray[Int]
+
+pub let ranges : ReadOnlyArray[Int]
+
+pub let space_chars : ReadOnlyArray[Int]
+
+pub let special_nums : ReadOnlyArray[Int]
+
+pub let specific_symbols : ReadOnlyArray[Int]
+
+pub fn string_to_lower(String) -> String
+
+pub fn string_to_upper(String) -> String
+
+pub fn to_lower(Char) -> Char
+
+pub fn to_title(Char) -> Char
+
+pub fn to_upper(Char) -> Char
+
+pub let turkish_case : SpecialCase
+
+// Errors
+
+// Types and methods
+pub(all) struct CaseRange {
+  lo : Int
+  hi : Int
+  delta1 : Int
+  delta2 : Int
+  delta3 : Int
+}
+
+pub(all) struct SpecialCase(Array[CaseRange])
+
+pub(all) struct UnicodeCategory(Int)
+
+// Type aliases
+
+// Traits
+pub(open) trait Eq {
+  method_(UnicodeCategory) -> Int
+}
+
