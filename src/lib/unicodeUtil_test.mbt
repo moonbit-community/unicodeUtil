@@ -87,7 +87,8 @@ test "special_case_conversion" {
   assert_eq(to_upper('ａ'), 'Ａ')
 }
 
-///| Unicode工具库测试用例
+///|
+/// Unicode工具库测试用例
 test "to_lower_ascii" {
   // 测试ASCII字符小写转换
   assert_eq(to_lower('A'), 'a')
@@ -296,7 +297,8 @@ test "is_punct_unicode" {
   assert_false(is_punct('１')) // 全角数字
 }
 
-///| 测试标记符号识别
+///|
+/// 测试标记符号识别
 test "is_mark" {
   // 组合标记
   assert_true(is_mark('\u0300')) // 重音符号 (Combining Grave Accent)
@@ -325,7 +327,8 @@ test "is_mark" {
   assert_true(is_mark('\u24D9')) // 封闭的小写字母 r
 }
 
-///| 标记符号与常规字符组合测试
+///|
+/// 标记符号与常规字符组合测试
 test "marks_with_base_char" {
   // 测试字符串中标记符号的识别
   let s = "e\u0301" // 'é' 分解形式（'e' + 锐音符号）
@@ -381,7 +384,8 @@ test "is_space" {
   assert_false(is_space('漢')) // 汉字
 }
 
-///| 测试控制字符识别
+///|
+/// 测试控制字符识别
 test "is_control" {
   // ASCII 控制字符
   assert_true(is_control('\u0000')) // NULL
@@ -419,7 +423,8 @@ test "is_control" {
   assert_false(is_control('\u2022')) // 圆点符号
 }
 
-///| 测试控制字符与其他类别的关系
+///|
+/// 测试控制字符与其他类别的关系
 test "control_vs_other_categories" {
   // 有些控制字符同时也是空白字符
   assert_true(is_control('\u0009')) // TAB 是控制字符
@@ -438,7 +443,8 @@ test "control_vs_other_categories" {
   assert_false(is_space('\u0000')) // 但不是空白字符
 }
 
-///| 测试拉丁字母识别
+///|
+/// 测试拉丁字母识别
 test "is_letter_latin" {
   // ASCII 字母
   assert_true(is_letter('A'))
@@ -469,7 +475,8 @@ test "is_letter_latin" {
   assert_true(is_letter('ḃ'))
 }
 
-///| 测试各种语言字母识别
+///|
+/// 测试各种语言字母识别
 test "is_letter_other_scripts" {
   // 希腊字母
   assert_true(is_letter('Α')) // 大写Alpha
@@ -510,7 +517,8 @@ test "is_letter_other_scripts" {
   assert_true(is_letter('ह'))
 }
 
-///| 测试非字母字符
+///|
+/// 测试非字母字符
 test "is_letter_non_letters" {
   // 数字
   assert_false(is_letter('0'))
@@ -530,7 +538,8 @@ test "is_letter_non_letters" {
   assert_false(is_letter('\n'))
 }
 
-///| 测试符号识别功能
+///|
+/// 测试符号识别功能
 test "is_symbol" {
   // ASCII 符号
   assert_true(is_symbol('$')) // 美元符号
@@ -610,7 +619,8 @@ test "is_symbol" {
   assert_false(is_symbol('漢')) // 汉字
 }
 
-///| 测试数字识别功能
+///|
+/// 测试数字识别功能
 test "is_number" {
   // 基本数字（通过is_digit已经识别）
   assert_true(is_number('0'))
@@ -681,7 +691,8 @@ test "is_number" {
   assert_false(is_number('漢')) // 非数字汉字
 }
 
-///| 测试is_number和is_digit的关系
+///|
+/// 测试is_number和is_digit的关系
 test "is_number_vs_is_digit" {
   // 基本数字两者都应该返回true
   assert_true(is_digit('0'))
@@ -704,7 +715,8 @@ test "is_number_vs_is_digit" {
   assert_false(is_number('a'))
 }
 
-///| 测试图形字符识别功能
+///|
+/// 测试图形字符识别功能
 test "is_graphic" {
   // 字母
   assert_true(is_graphic('a'))
@@ -741,7 +753,8 @@ test "is_graphic" {
   assert_false(is_graphic('\u001F')) // UNIT SEPARATOR
 }
 
-///| 测试可打印字符识别功能
+///|
+/// 测试可打印字符识别功能
 test "is_print" {
   // 字母
   assert_true(is_print('a'))
@@ -780,7 +793,8 @@ test "is_print" {
   assert_false(is_print('\u001F')) // UNIT SEPARATOR
 }
 
-///| 测试is_graphic和is_print的关系
+///|
+/// 测试is_graphic和is_print的关系
 test "is_graphic_vs_is_print" {
   // 字母、数字、标点、符号都同时是图形字符和可打印字符
   assert_true(is_graphic('a'))
