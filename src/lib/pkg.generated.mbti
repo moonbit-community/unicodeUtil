@@ -2,37 +2,37 @@
 package "kesmeey/unicodeUtil/lib"
 
 // Values
-pub const Control : Int = 8
+pub const Control : Int32 = 8
 
-pub const Digit : Int = 4
+pub const Digit : Int32 = 4
 
-pub const Graphic : Int = 11
+pub const Graphic : Int32 = 11
 
-pub const Letter : Int = 3
+pub const Letter : Int32 = 3
 
-pub const LowerCase : Int = 1
+pub const LowerCase : Int32 = 1
 
-pub const Mark : Int = 6
+pub const Mark : Int32 = 6
 
-pub const Number : Int = 10
+pub const Number : Int32 = 10
 
-pub const Print : Int = 12
+pub const Print : Int32 = 12
 
-pub const Punct : Int = 5
+pub const Punct : Int32 = 5
 
-pub const Space : Int = 7
+pub const Space : Int32 = 7
 
-pub const Symbol : Int = 9
+pub const Symbol : Int32 = 9
 
-pub const TitleCase : Int = 2
+pub const TitleCase : Int32 = 2
 
-pub const UpperCase : Int = 0
+pub const UpperCase : Int32 = 0
 
-pub let control_chars : ReadOnlyArray[Int]
+pub let control_chars : ReadOnlyArray[Int32]
 
-pub let han_nums : ReadOnlyArray[Int]
+pub let han_nums : ReadOnlyArray[Int32]
 
-pub let individual_puncts : ReadOnlyArray[Int]
+pub let individual_puncts : ReadOnlyArray[Int32]
 
 pub fn is_control(Char) -> Bool
 
@@ -56,19 +56,19 @@ pub fn is_space(Char) -> Bool
 
 pub fn is_symbol(Char) -> Bool
 
-pub let latin1_puncts : ReadOnlyArray[Int]
+pub let latin1_puncts : ReadOnlyArray[Int32]
 
-pub let mark_chars : ReadOnlyArray[Int]
+pub let mark_chars : ReadOnlyArray[Int32]
 
-pub let numRanges : ReadOnlyArray[Int]
+pub let numRanges : ReadOnlyArray[Int32]
 
-pub let ranges : ReadOnlyArray[Int]
+pub let ranges : ReadOnlyArray[Int32]
 
-pub let space_chars : ReadOnlyArray[Int]
+pub let space_chars : ReadOnlyArray[Int32]
 
-pub let special_nums : ReadOnlyArray[Int]
+pub let special_nums : ReadOnlyArray[Int32]
 
-pub let specific_symbols : ReadOnlyArray[Int]
+pub let specific_symbols : ReadOnlyArray[Int32]
 
 pub fn string_to_lower(String) -> String
 
@@ -86,21 +86,20 @@ pub let turkish_case : SpecialCase
 
 // Types and methods
 pub(all) struct CaseRange {
-  lo : Int
-  hi : Int
-  delta1 : Int
-  delta2 : Int
-  delta3 : Int
+  lo : Int32
+  hi : Int32
+  delta1 : Int32
+  delta2 : Int32
+  delta3 : Int32
 }
 
 pub(all) struct SpecialCase(Array[CaseRange])
 
-pub(all) struct UnicodeCategory(Int)
+pub(all) struct UnicodeCategory(Int32)
 
 // Type aliases
 
 // Traits
 pub(open) trait Eq {
-  method_(UnicodeCategory) -> Int
+  fn method_(UnicodeCategory) -> Int32
 }
-

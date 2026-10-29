@@ -4,10 +4,10 @@
 
 ///|
 /// Unicode 字符类别定义
-pub(all) struct UnicodeCategory(Int)
+pub(all) struct UnicodeCategory(Int32)
 
 ///|
-impl @prelude.Eq for UnicodeCategory with equal(self, other) {
+impl @prelude.Eq for UnicodeCategory with fn equal(self, other) {
   let UnicodeCategory(lhs) = self
   let UnicodeCategory(rhs) = other
   lhs == rhs
@@ -15,7 +15,7 @@ impl @prelude.Eq for UnicodeCategory with equal(self, other) {
 
 ///|
 pub(open) trait Eq {
-  method_(UnicodeCategory) -> Int
+  fn method_(UnicodeCategory) -> Int32
 }
 
 ///|
@@ -73,11 +73,11 @@ pub const Print = 12
 ///|
 /// Unicode 字符大小写转换范围
 pub(all) struct CaseRange {
-  lo : Int // 范围起始
-  hi : Int // 范围结束
-  delta1 : Int // 大写转换增量
-  delta2 : Int // 小写转换增量
-  delta3 : Int // 标题转换增量
+  lo : Int32 // 范围起始
+  hi : Int32 // 范围结束
+  delta1 : Int32 // 大写转换增量
+  delta2 : Int32 // 小写转换增量
+  delta3 : Int32 // 标题转换增量
 }
 
 ///|
@@ -86,7 +86,7 @@ pub(all) struct SpecialCase(Array[CaseRange])
 
 ///|
 /// 在排序好的范围表中搜索一个码点
-fn search_range(ranges : ReadOnlyArray[Int], target : Int) -> Bool {
+fn search_range(ranges : ReadOnlyArray[Int32], target : Int32) -> Bool {
   let mut i = 0
   while i < ranges.length() {
     let start = ranges[i]
@@ -164,7 +164,7 @@ pub fn to_lower(r : Char) -> Char {
   // ASCII 范围内的快速处理
   if r <= MaxASCII {
     if 'A' <= r && r <= 'Z' {
-      return Int::unsafe_to_char(code + ('a'.to_int() - 'A'.to_int()))
+      return Int32::unsafe_to_char(code + ('a'.to_int() - 'A'.to_int()))
     }
     return r
   }
@@ -178,34 +178,34 @@ pub fn to_lower(r : Char) -> Char {
 
   // 1. 土耳其语/阿塞拜疆语特殊字符
   if code == 0x0049 { // I → ı
-    return Int::unsafe_to_char(0x131)
+    return Int32::unsafe_to_char(0x131)
   } else if code == 0x0130 { // İ → i
-    return Int::unsafe_to_char(0x69)
+    return Int32::unsafe_to_char(0x69)
   }
 
   // 2. 希腊字母
   if code >= 0x0391 && code <= 0x03A9 && code != 0x03A2 {
-    return Int::unsafe_to_char(code + 32)
+    return Int32::unsafe_to_char(code + 32)
   }
 
   // 3. 西里尔字母
   if code >= 0x0410 && code <= 0x042F {
-    return Int::unsafe_to_char(code + 32)
+    return Int32::unsafe_to_char(code + 32)
   }
 
   // 4. 亚美尼亚字母
   if code >= 0x0531 && code <= 0x0556 {
-    return Int::unsafe_to_char(code + 48)
+    return Int32::unsafe_to_char(code + 48)
   }
 
   // 5. 全角字母
   if code >= 0xFF21 && code <= 0xFF3A {
-    return Int::unsafe_to_char(code + 32)
+    return Int32::unsafe_to_char(code + 32)
   }
 
   // 6. 德语大写ẞ小写转换
   if code == 0x1E9E { // 大写的ẞ (U+1E9E)
-    return Int::unsafe_to_char(0xDF) // 转换为小写的ß (U+00DF)
+    return Int32::unsafe_to_char(0xDF) // 转换为小写的ß (U+00DF)
   }
 
   // 通用情况 - 如果没有特殊规则，返回原字符
@@ -220,7 +220,7 @@ pub fn to_upper(r : Char) -> Char {
   // ASCII 范围内的快速处理
   if r <= MaxASCII {
     if 'a' <= r && r <= 'z' {
-      return Int::unsafe_to_char(code - ('a'.to_int() - 'A'.to_int()))
+      return Int32::unsafe_to_char(code - ('a'.to_int() - 'A'.to_int()))
     }
     return r
   }
@@ -234,29 +234,29 @@ pub fn to_upper(r : Char) -> Char {
 
   // 1. 土耳其语/阿塞拜疆语特殊字符
   if code == 0x0069 { // i → İ
-    return Int::unsafe_to_char(0x130)
+    return Int32::unsafe_to_char(0x130)
   } else if code == 0x0131 { // ı → I
-    return Int::unsafe_to_char(0x49)
+    return Int32::unsafe_to_char(0x49)
   }
 
   // 2. 希腊字母
   if code >= 0x03B1 && code <= 0x03C9 {
-    return Int::unsafe_to_char(code - 32)
+    return Int32::unsafe_to_char(code - 32)
   }
 
   // 3. 西里尔字母
   if code >= 0x0430 && code <= 0x044F {
-    return Int::unsafe_to_char(code - 32)
+    return Int32::unsafe_to_char(code - 32)
   }
 
   // 4. 亚美尼亚字母
   if code >= 0x0561 && code <= 0x0586 {
-    return Int::unsafe_to_char(code - 48)
+    return Int32::unsafe_to_char(code - 48)
   }
 
   // 5. 全角字母
   if code >= 0xFF41 && code <= 0xFF5A {
-    return Int::unsafe_to_char(code - 32)
+    return Int32::unsafe_to_char(code - 32)
   }
 
   // 通用情况 - 如果没有特殊规则，返回原字符
@@ -270,7 +270,7 @@ pub fn to_title(r : Char) -> Char {
 
   // 希腊小写字母sigma的特殊处理
   if code == 0x03C3 { // 希腊小写字母sigma
-    return Int::unsafe_to_char(0x03A3) // 希腊大写字母SIGMA
+    return Int32::unsafe_to_char(0x03A3) // 希腊大写字母SIGMA
   }
 
   // 对于其他字符，使用大写形式
@@ -279,22 +279,22 @@ pub fn to_title(r : Char) -> Char {
 
 ///|
 /// 处理Latin1范围内的大小写转换
-fn to_latin1_case(case_type : Int, r : Char) -> Char {
+fn to_latin1_case(case_type : Int32, r : Char) -> Char {
   let code = r.to_int()
   if case_type == LowerCase {
     // 将大写转为小写
     if (code >= 0xC0 && code <= 0xD6) || (code >= 0xD8 && code <= 0xDE) {
-      return Int::unsafe_to_char(code + 32)
+      return Int32::unsafe_to_char(code + 32)
     }
   } else if case_type == UpperCase {
     // 将小写转为大写
     if (code >= 0xE0 && code <= 0xF6) || (code >= 0xF8 && code <= 0xFE) {
-      return Int::unsafe_to_char(code - 32)
+      return Int32::unsafe_to_char(code - 32)
     }
 
     // 德语ß大写转换
     if code == 0xDF { // 德语 ß
-      return Int::unsafe_to_char(0x1E9E) // 转换为大写的ẞ (U+1E9E)
+      return Int32::unsafe_to_char(0x1E9E) // 转换为大写的ẞ (U+1E9E)
     }
   }
   return r
